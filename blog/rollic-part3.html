@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>How Rollic Kills 1,000 Games a Year to Find Hits (Part 3)</title>
+  <meta name="description" content="Talent philosophy, the 3-month hit machine, test-and-cut discipline (1000+ kills/year), and why hybrid monetization is an outcome of better loops—not a strategy."/>
+  <meta name="theme-color" content="#6C63FF"/>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root{
+      --primary:#6C63FF; --primary-light:#8580FF; --accent:#36D1DC;
+      --gradient:linear-gradient(135deg,var(--primary),var(--accent));
+      --text-dark:#2d2b4e; --text:#514f6e; --text-light:#7a7896;
+      --border:#e9ecf5; --light-bg:#f8f9fe;
+      --shadow:0 10px 30px rgba(108,99,255,.12);
+      --radius:16px; --transition:all .25s ease;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:var(--light-bg);
+      line-height:1.75;
+    }
+    a{color:var(--primary);text-decoration:none;transition:var(--transition)}
+    a:hover{color:var(--accent)}
+
+    /* Hero */
+    .hero{
+      padding:72px 0 34px;
+      background:var(--gradient);
+      color:#fff;
+      text-align:center;
+      display:flex; flex-direction:column; justify-content:center; align-items:center;
+    }
+    .hero .container{width:92%;max-width:1200px;margin:0 auto}
+    .hero h1{
+      font-family:'Oxanium',cursive;
+      font-size:2.4rem;
+      font-weight:700;
+      margin:0 0 12px;
+      line-height:1.3;
+    }
+    .hero p{
+      font-size:1.08rem;
+      opacity:.92;
+      margin:0 auto;
+      max-width:780px;
+    }
+
+    /* Content wrap (no card border) */
+    .post-wrap{width:min(900px,92%);margin:-28px auto 64px}
+
+    /* Optional cover */
+    .thumb{
+      width:100%;
+      aspect-ratio:16/9;
+      object-fit:cover;
+      border-radius:var(--radius);
+      background:#eef1ff;
+      display:block;
+      margin-top:40px;   /* move cover down under hero */
+      margin-bottom:1.4rem;
+      box-shadow:var(--shadow);
+    }
+
+    /* Meta */
+    .meta{
+      display:flex; gap:14px; flex-wrap:wrap;
+      color:var(--text-light); font-size:.95rem;
+      margin:0 0 18px; padding-bottom:14px;
+      border-bottom:1px solid var(--border);
+    }
+    .meta span{display:inline-flex;align-items:center;gap:6px}
+
+    /* Headings & paragraphs */
+    h2{
+      color:var(--text-dark);
+      font-family:Oxanium,cursive;
+      font-size:1.55rem;
+      margin:1.9rem 0 1rem;
+      position:relative;
+      padding-left:14px;
+    }
+    h2::before{
+      content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
+      width:6px;height:24px;border-radius:3px;background:var(--gradient);
+    }
+    p{margin:1rem 0;font-size:1.05rem}
+    ul{margin:.75rem 0 1rem 1.1rem}
+    li{margin:.35rem 0}
+
+    .note{
+      background:linear-gradient(90deg,rgba(108,99,255,.06),rgba(54,209,220,.06));
+      border-left:4px solid var(--primary);
+      border-radius:0 12px 12px 0;
+      padding:12px 14px;
+      margin:1.1rem 0;
+    }
+    .hr{height:1px;background:var(--border);margin:2rem 0}
+
+    /* Quick nav chips */
+    .quick-nav{display:flex;gap:8px;flex-wrap:wrap;margin:1rem 0 1.2rem}
+    .chip{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:.45rem .75rem;border:1px solid var(--border);border-radius:999px;
+      background:#fff; box-shadow:var(--shadow); font-weight:600; font-size:.92rem;
+      transition:var(--transition)
+    }
+    .chip:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(108,99,255,.16)}
+
+    /* Recommended Levels */
+    .recommended{margin:2.4rem 0 1.4rem}
+    .recommended h3{
+      font-family:Oxanium,cursive; color:var(--text-dark);
+      font-size:1.6rem; text-align:center; margin:0 0 1.4rem; position:relative;
+    }
+    .recommended h3::after{
+      content:""; position:absolute; left:50%; bottom:-10px; transform:translateX(-50%);
+      width:62px; height:3px; border-radius:2px; background:var(--gradient);
+    }
+    .grid{display:grid;gap:16px;grid-template-columns:repeat(2,1fr)}
+    .card{
+      background:#fff; border:1px solid var(--border); border-radius:14px;
+      padding:18px; text-align:center; box-shadow:var(--shadow); transition:var(--transition);
+    }
+    .card:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(108,99,255,.16)}
+    .num{font-family:Oxanium,cursive;font-weight:700;font-size:1.3rem;color:var(--primary);margin-bottom:.35rem}
+    .desc{color:var(--text-light);font-size:.92rem;margin-bottom:.9rem}
+    .play{display:inline-block;padding:.55rem 1.05rem;border-radius:999px;background:var(--gradient);color:#fff;font-weight:600}
+
+    /* Pager */
+    .pager{display:flex;justify-content:space-between;gap:12px;margin-top:24px}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;padding:11px 16px;
+      border:1px solid var(--border); border-radius:10px; background:#fff;
+      color:var(--text-dark); font-weight:700; box-shadow:var(--shadow);
+      transition:var(--transition)
+    }
+    .btn:hover{border-color:var(--primary-light);color:var(--primary);transform:translateY(-2px)}
+
+    /* Responsive */
+    @media (max-width:900px){ .grid{grid-template-columns:1fr} }
+    @media (max-width:768px){
+      .hero{padding:66px 0 28px}
+      .hero h1{font-size:2.05rem}
+      .hero p{font-size:1.02rem}
+      h2{font-size:1.35rem}
+      .pager{flex-direction:column}
+      .btn{justify-content:center}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header injected by /scripts/header.js -->
+  <div id="header-container" data-src="/components/header.html"></div>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="container">
+      <h1>How Rollic Kills 1,000 Games a Year to Find Hits (Part 3)</h1>
+      <p>Talent philosophy, the 3-month hit machine, test-and-cut discipline, and hybrid monetization as a result—not a strategy.</p>
+    </div>
+  </header>
+
+  <!-- Article -->
+  <main class="post-wrap">
+    <article>
+      <!-- 可选封面：若不需要封面，删除下一行即可 -->
+      <img class="thumb" src="/assets/blog/rollic-games-office-team.webp" alt="Rollic team meeting focused on hybrid monetization strategies and long-term growth plans.">
+
+      <div class="meta">
+        <span><i class="fa-regular fa-calendar"></i> May 20, 2025</span>
+        <span><i class="fa-regular fa-clock"></i> 9–11 min</span>
+        <span><i class="fa-solid fa-tag"></i> Game Development</span>
+      </div>
+
+      <!-- Quick navigation -->
+      <div class="quick-nav" aria-label="Quick navigation">
+        <a class="chip" href="/blog/rollic-part1.html"><i class="fa-solid fa-book-open"></i> Part 1</a>
+        <a class="chip" href="/blog/rollic-part2.html"><i class="fa-solid fa-book"></i> Part 2</a>
+         <a class="chip" href="/download.html"><i class="fa-solid fa-download"></i> Download</a>
+        <a class="chip" href="/levels.html"><i class="fa-solid fa-list-ol"></i> All Levels</a>
+      </div>
+
+      <p><em>This final part focuses on team craft, the “three-month hit” rhythm, why Rollic kills fast and often, and how hybrid monetization emerges naturally once the core loop sustains month-scale attention.</em></p>
+
+      <h2>Hire for creativity, not just execution</h2>
+      <p>Rollic’s leadership are <strong>core gamers</strong>, and they hire for <em>gamefeel instincts</em> first. In saturated genres, polish alone rarely breaks through. What moves the needle is a <strong>fresh verb</strong>, a surprising risk-reward, or a fair fail that teaches. Execution then “catches up” to the idea that already pulls players back.</p>
+      <ul>
+        <li><strong>Signals to look for in interviews:</strong> candidates who can name their top control feels, explain why a failure state is fair, and produce a replayable paper prototype in under an hour.</li>
+        <li><strong>Signals to avoid:</strong> production-heavy portfolios that never articulate <em>why</em> loops retain.</li>
+      </ul>
+      <div class="note"><strong>Heuristic:</strong> If someone can’t describe the difference between “satisfying dodge” and “forgiving collision” <em>without</em> opening an engine, they’ll struggle to design sticky loops under time pressure.</div>
+
+      <h2>The three-month hit machine</h2>
+      <p>The studio’s cadence is simple: prototype the verb → test for stickiness → scale <em>only after</em> a clean signal. <em>Color Block Jam</em> went from nonexistent to a Top-50 earner in roughly three months. The lever wasn’t headcount; it was <strong>focus on a crisp loop</strong> and a small team able to iterate daily on feel, clarity, and mastery ramps.</p>
+      <ul>
+        <li><strong>Week 1:</strong> two-input prototype, no meta, 3–5 short scenarios.</li>
+        <li><strong>Week 2:</strong> tighten input windows, juice feedback, add one fair fail and one “I can do better” success.</li>
+        <li><strong>Week 3:</strong> quick creatives to sanity-check CPI/CTR fit; closed test for session count and voluntary restarts.</li>
+        <li><strong>Weeks 4–6:</strong> content <em>only</em> after proven repeat; build 20–40 “honest” levels that widen skill variance.</li>
+        <li><strong>Weeks 7–12:</strong> production lift, monetization spines, live-ops shells.</li>
+      </ul>
+
+      <h2>The 1,000-kill rule (and why it’s healthy)</h2>
+      <p>Rollic reportedly kills <strong>1,000+ projects per year</strong> with only ~40 reaching soft-launch. That isn’t waste; it’s organizational hygiene. By declaring clear <strong>KPI gates</strong>—marketability, D1/D3 retention, early engagement minutes—teams avoid the content-bloat trap. If the loop doesn’t sing at three levels, thirty won’t save it.</p>
+      <ul>
+        <li><strong>Kill fast:</strong> when the signal is muddy after two rebuilds of the core, park it and move on.</li>
+        <li><strong>Protect morale:</strong> celebrate kills as learning; velocity matters more than attachment.</li>
+        <li><strong>Keep scope tiny:</strong> every extra system is delay tax against the one question: “Will people replay?”</li>
+      </ul>
+
+      <h2>Designing month-scale engagement</h2>
+      <p>To hold attention beyond the novelty week, games need <strong>legible mastery ladders</strong>. Rollic’s approach layers difficulty across three axes: input precision, information timing, and route planning. Players who can name the mistake they made will retry. Players who feel random loss churn.</p>
+      <ul>
+        <li><strong>Precision:</strong> make success windows tight yet learnable; surface near-miss feedback.</li>
+        <li><strong>Timing:</strong> telegraph hazards early; reward anticipatory play.</li>
+        <li><strong>Routing:</strong> let experts choose greedy lines that risk time or safety.</li>
+      </ul>
+
+      <h2>Hybrid monetization is a result, not a strategy</h2>
+      <p>Rollic didn’t “decide” to go hybrid. Once loops hold month-scale attention, <strong>IAP emerges naturally</strong>—players want expression, time compression, and mastery accelerators. Ads remain for broad-revenue coverage, but never block core agency.</p>
+      <ul>
+        <li><strong>Ads that respect skill:</strong> optional retries, hints, light boosts; no hard gates.</li>
+        <li><strong>IAP that feels earned:</strong> cosmetics tied to skill beats, time savers that compress friction (not challenge), and daily packs that anchor sessions.</li>
+        <li><strong>When to add IAP:</strong> only after evidence that players care about shaving time or expressing identity. If you need IAP to save engagement, the loop is weak.</li>
+      </ul>
+
+      <h2>Founder playbook: stay light, know yourself, play everything</h2>
+      <p>Burak Vardal’s advice to founders is disarmingly simple: <strong>stay light</strong> (don’t over-expand teams or overspec products), <strong>know yourself</strong> (hire to cover your weaknesses), and <strong>play everything</strong> (treat great studios as your university).</p>
+      <ul>
+        <li><strong>Team health:</strong> small cross-skill pods beat big hierarchies for prototype speed.</li>
+        <li><strong>Scope control:</strong> add one system only when it unlocks a new mastery rung.</li>
+        <li><strong>Data sanity:</strong> cohort correctly; don’t confuse paid spikes with retention.</li>
+      </ul>
+
+      <h2>10-point checklist before soft-launch</h2>
+      <ul>
+        <li>Two inputs max; clean dodge/placement verb proven in 3–5 scenarios.</li>
+        <li>Tutorial exit rate &gt; 90%; players can describe the goal in one sentence.</li>
+        <li>Voluntary restart within 2 minutes for &gt; 40% of testers.</li>
+        <li>Fair fail telegraphed; players name their mistake.</li>
+        <li>Session 1 median &gt; 4 minutes without meta crutches.</li>
+        <li>D1 intent signal (repeat sessions + “I can do better” loop).</li>
+        <li>CPI sanity (creatives convey the verb honestly).</li>
+        <li>One cosmetic and one time saver scoped (locked until proof of care).</li>
+        <li>Ad placements optional and post-agency.</li>
+        <li>Live-ops skeleton (events copy, hooks, basic segmentation plan).</li>
+      </ul>
+
+      <h2>Pitfalls that still nuke good ideas</h2>
+      <ul>
+        <li><strong>Random loss:</strong> unclear fail states break trust; retention craters.</li>
+        <li><strong>Pretty but inert:</strong> visual upgrades that don’t inform play waste attention budget.</li>
+        <li><strong>Meta first:</strong> progression can mask a flat loop for a week—then falls off a cliff.</li>
+        <li><strong>Content as cure:</strong> scaling a mid loop increases cost, not fun.</li>
+      </ul>
+
+      <p>Want to <em>feel</em> honest mastery ramps? Try <strong>Hole People</strong> <a href="/level.html?n=312#setup">Level 312</a> for planning depth, <a href="/level.html?n=78#guide">Level 78</a> for onboarding clarity, and <a href="/level.html?n=420#master">Level 420</a>/<a href="/level.html?n=189#speedrun">189</a> for speed-skill tuning. If you decide to retry before minute 2, that’s your loop doing work.</p>
+
+      <div class="hr"></div>
+
+      <!-- Recommended Levels -->
+      <section class="recommended" aria-labelledby="rec-title">
+        <h3 id="rec-title">Recommended Levels</h3>
+        <div class="grid">
+          <div class="card">
+            <div class="num">Level 125</div>
+            <div class="desc">Advanced Puzzle Challenge</div>
+            <a class="play" href="/level.html?n=125#strategy">Play Now</a>
+          </div>
+          <div class="card">
+            <div class="num">Level 256</div>
+            <div class="desc">Color Matching Expert</div>
+            <a class="play" href="/level.html?n=256#pathing">Play Now</a>
+          </div>
+          <div class="card">
+            <div class="num">Level 312</div>
+            <div class="desc">Strategic Block Placement</div>
+            <a class="play" href="/level.html?n=312#setup">Play Now</a>
+          </div>
+          <div class="card">
+            <div class="num">Level 78</div>
+            <div class="desc">Beginner's Guide</div>
+            <a class="play" href="/level.html?n=78#guide">Play Now</a>
+          </div>
+          <div class="card">
+            <div class="num">Level 420</div>
+            <div class="desc">Master Level Challenge</div>
+            <a class="play" href="/level.html?n=420#master">Play Now</a>
+          </div>
+          <div class="card">
+            <div class="num">Level 189</div>
+            <div class="desc">Speed Run Favorite</div>
+            <a class="play" href="/level.html?n=189#speedrun">Play Now</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="hr"></div>
+
+      <!-- Pager -->
+      <nav class="pager" aria-label="Pagination">
+        <a class="btn" href="/blog/rollic-part2.html"><i class="fa-solid fa-arrow-left"></i> Part 2</a>
+        <a class="btn" href="/blog.html">Back to Blog <i class="fa-solid fa-arrow-right"></i></a>
+      </nav>
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer-container" data-src="/components/footer.html"></div>
+
+  <!-- Header/Footer injection + nav highlight -->
+  <script defer src="/scripts/header.js"></script>
+
+  <!-- JSON-LD for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"BlogPosting",
+    "headline":"How Rollic Kills 1,000 Games a Year to Find Hits (Part 3)",
+    "description":"Talent philosophy, the 3-month hit machine, test-and-cut discipline, and hybrid monetization as a result—not a strategy.",
+    "author":{"@type":"Organization","name":"Hole People Guides"},
+    "publisher":{"@type":"Organization","name":"Hole People Guides"},
+    "datePublished":"2025-08-26",
+    "image":"/assets/blog/rollic-teams.webp",
+    "mainEntityOfPage":{"@type":"WebPage","@id":"/blog/rollic-part3.html"}
+  }
+  </script>
+</body>
+</html>

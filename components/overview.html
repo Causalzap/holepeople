@@ -1,0 +1,155 @@
+<section id="section-overview" class="c-overview">
+    <div class="c-overview-container">
+      <h2 class="section-title">What is <span class="highlight">Hole People</span>?</h2>
+  
+      <div class="overview-content">
+        <div class="overview-text">
+          <p><strong>Hole People</strong> is a simple yet highly addictive <strong>strategic puzzle game</strong> 
+          where players must fill all the stickmen into the holes before their slots run out. 
+          Different colors block each other, so every move requires careful planning and quick thinking.</p>
+  
+          <p>The objective is straightforward but challenging: <strong>empty the front rows</strong> to make space, 
+          manage your available slots wisely, and ensure every stickman falls into the correct hole. 
+          One wrong move can fill your slots too quickly — and it’s game over!</p>
+  
+          <p>With regular updates, the game continues to evolve. The latest version introduces 
+          <strong>the CAPE MAN</strong> — red-cloaked stickmen who must be timed correctly with their cloaks open 
+          to drop into the holes. Alongside smoother visuals, polished animations, and brand-new levels, 
+          <strong>Hole People</strong> keeps puzzle fans engaged and challenged.</p>
+  
+          <p>Whether you’re playing casually or aiming for three-star victories on every level, 
+          this game delivers endless hours of <strong>fun, strategy, and satisfying puzzle-solving</strong>.</p>
+        </div>
+  
+        <div class="overview-image" aria-label="Hole People game preview">
+          <img src="assets/image/hole-people-level-50-unique-challenges.png" 
+               alt="Hole People Level 50 puzzle gameplay - unique stickman challenges and colorful obstacles 
+               loading="lazy" width="520" height="720">
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <style>
+  /* ===== Overview (scoped) ===== */
+  .c-overview{
+    padding:100px 0;
+    background:#fff;
+  }
+  
+  /* 容器 */
+  .c-overview-container{
+    max-width:1200px;
+    margin:0 auto;
+    padding:0 20px;
+  }
+  
+  /* 标题 */
+  .c-overview .section-title{
+    font-size:2.5rem;
+    text-align:center;
+    margin-bottom:3rem;
+    position:relative;
+    color:var(--text-dark);
+  }
+  .c-overview .section-title::after{
+    content:'';
+    position:absolute;
+    bottom:-10px; left:50%;
+    transform:translateX(-50%);
+    width:80px; height:4px;
+    background:var(--gradient-primary);
+    border-radius:2px;
+  }
+  
+  /* 主体布局 */
+  .c-overview .overview-content{
+    display:flex;
+    gap:2rem;
+    align-items:flex-start;
+  }
+  .c-overview .overview-text
+  { 
+    max-width: 680px;                 /* 更舒服的阅读宽度 */
+    padding-right: .5rem;
+    text-wrap: pretty;     
+  }
+  .c-overview .overview-text p{
+    font-size: 1.06rem;               /* 略大一点更易读 */
+    line-height: 1.85;                /* 提升行距 */
+    letter-spacing: .1px;             /* 轻微字距 */
+    color: var(--text-light);
+    margin: 0 0 1.1rem;
+  }
+
+  /* 首段做“导语”效果：稍大、稍深、上边距更紧凑 */
+.c-overview .overview-text p:first-of-type{
+  font-size: 1.14rem;
+  color: var(--text-dark);
+  margin-top: .25rem;
+}
+
+/* 强调词更沉稳，而不是纯粗体一坨黑 */
+.c-overview .overview-text strong{
+  color: var(--text-dark);
+  font-weight: 700;
+}
+
+/* 给强调词加一条很轻的“渐变底线”，更有层次（可随时关掉） */
+.c-overview .overview-text strong{
+  background: linear-gradient( to top, rgba(108,99,255,.18) 0%, rgba(108,99,255,0) 70% );
+  padding: 0 .05em;
+  border-radius: 2px;
+}
+
+/* 关键提示句：句末感更强的分段留白（给包含—或!的段落稍加呼吸感） */
+.c-overview .overview-text p:has(strong),
+.c-overview .overview-text p:has(em) {
+  margin-bottom: 1.25rem;
+}
+
+/* 段落组左侧一条很轻的导读线，提升整体聚合感 */
+.c-overview .overview-text{
+  position: relative;
+}
+.c-overview .overview-text::before{
+  content:"";
+  position: absolute;
+  left: -14px; top: .2rem; bottom: .2rem;
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, rgba(108,99,255,.18), rgba(54,209,220,.18));
+}
+
+/* 标点/数字的易读性优化（中文/多语言下也友好） */
+.c-overview .overview-text p{
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+  .c-overview .overview-image{
+    flex: 0 1 40%;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* 图片尺寸限制更严格 */
+.c-overview .overview-image img {
+  width: 100%;
+  max-width: 420px;   /* ✅ 强制缩小，避免压缩文字 */
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.08);
+  display: block;
+}
+  
+  /* 响应式 */
+  @media (max-width:1024px){
+    .c-overview .overview-content{ flex-direction: column; }
+    .c-overview .overview-image img{ max-width: 460px; }
+  }
+
+  @media (max-width: 600px){
+  .c-overview .overview-image img{ max-width: 400px; }
+}
+  </style>
+  

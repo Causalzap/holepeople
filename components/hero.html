@@ -1,0 +1,219 @@
+<section class="c-hero">
+    <div class="container">
+  
+      <div class="hero-content">
+        <h1>Master Every Hole! <span class="sr-only">Hole People Game Guides</span></h1>
+        <p>Get the complete <strong>Hole People level guides</strong> with step-by-step walkthroughs,
+          character strategies, and pro tips to achieve three-star victories.</p>
+  
+        <!-- 搜索/直达关卡 -->
+        <form class="hero-search" action="/levels.html" method="get" role="search" aria-label="Search levels">
+          <input name="q" type="search" placeholder="Enter a level number (e.g., 113)" aria-label="Search level">
+          <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i> Search Guide</button>
+        </form>
+  
+        <!-- CTA 按钮 -->
+        <div class="hero-ctas">
+          <a href="/levels.html" class="btn btn-primary">
+            <i class="fa fa-book"></i> View All Levels
+          </a>
+          <a href="/download.html" class="btn btn-ghost">
+            <i class="fa fa-download"></i> Download Game
+          </a>
+        </div>
+  
+        <!-- 热门关卡直达 -->
+        <ul class="hero-chips" aria-label="Popular levels">
+          <li><a href="/levels/level-139.html">Level 139</a></li>
+          <li><a href="/levels/level-396.html">Level 396</a></li>
+          <li><a href="/levels/level-155.html">Level 155</a></li>
+          <li><a href="/levels/level-140.html">Level 140</a></li>
+          <li><a href="/levels/level-130.html">Level 130</a></li>
+        </ul>
+  
+        <!-- 数据徽章 -->
+        <ul class="hero-badges" aria-label="Site stats">
+          <li><span><i class="fa fa-users"></i> 1M+ Downloads</span></li>
+          <li><span><i class="fa fa-star"></i> 4.5 / 5 Rating</span></li>
+          <li><span><i class="fa fa-video"></i> 600+ Walkthrough Videos</span></li>
+        </ul>
+      </div>
+  
+      <!-- 右侧视觉 -->
+      <div class="hero-visual">
+        <div class="floating-card">
+          <video autoplay muted loop playsinline>
+            <source src="assets/videos/hole-people-gameplay-preview.mp4" type="video/mp4">
+          </video>
+          <div class="card-glow"></div>
+        </div>
+  
+        <div class="floating-card">
+          <img src="assets/image/hole-people-level-106-discover-new-features.png" 
+               alt="Hole People Level 106 Discover New Features">
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <style>
+  /* Hero Section */
+  .c-hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 20px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f8f9fe 0%, #e9ecf8 100%);
+  }
+  
+  .c-hero .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  
+  .c-hero .hero-content {
+    flex: 1;
+    max-width: 600px;
+  }
+  
+  .c-hero .hero-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+    color: var(--text-dark);
+  }
+  
+  .c-hero .hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: var(--text-light);
+  }
+  
+  /* 搜索框 */
+  .hero-search {
+    display: flex; gap: .75rem; margin: 1rem 0 1.5rem;
+  }
+  .hero-search input {
+    flex: 1; padding: .9rem 1rem; border: 1px solid var(--border-light);
+    border-radius: 12px; font-size: 1rem; background: #fff;
+  }
+  .hero-search input:focus {
+    outline: none; border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(108,99,255,.12);
+  }
+  
+  /* CTA 按钮 */
+  .hero-ctas { display: flex; gap: .75rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .btn-ghost {
+    background: transparent; border: 2px solid var(--primary-light);
+    color: var(--primary); padding: .85rem 1.15rem; border-radius: 999px;
+    font-weight: 700; text-decoration: none; display:inline-flex; align-items:center; gap:.4rem;
+  }
+  .btn-ghost:hover {
+    background: rgba(108,99,255,.08); border-color: var(--primary); transform: translateY(-1px);
+  }
+  
+  /* 热门关卡 Chips */
+  .hero-chips {
+    display:flex; flex-wrap:wrap; gap:.5rem; margin:.5rem 0 1rem; padding:0; list-style:none;
+  }
+  .hero-chips a {
+    display:inline-block; padding:.45rem .7rem; border-radius:999px; font-weight:600;
+    background:#fff; border:1px solid var(--border-light); color:var(--text-dark);
+    text-decoration:none; box-shadow:0 1px 0 rgba(0,0,0,.03);
+  }
+  .hero-chips a:hover { border-color: var(--primary-light); color: var(--primary); }
+  
+  /* 数据徽章 */
+  .hero-badges { 
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 30px 0;
+    padding: 0;
+    list-style: none;
+    justify-content: center;
+ }
+  .hero-badges li span {
+    display:inline-flex; align-items:center; gap:.4rem;
+    padding:.42rem .65rem; border-radius:10px;
+    background:#fff; border:1px solid var(--border-light);
+    color: var(--text-dark); font-weight:600;
+  }
+  .hero-badges i { display: flex; }
+
+  .hero-badges li span {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 24px;
+            border-radius: 18px;
+            background: #fff;
+            border: 1px solid rgba(224, 224, 224, 0.8);
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            min-width: 180px;
+            justify-content: center;
+        }
+        
+        .hero-badges li span:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: rgba(108, 99, 255, 0.3);
+        }
+        .hero-badges i {
+            font-size: 1rem;
+            color: #6c63ff;
+            opacity: 0.9;
+        }
+  
+  /* 右侧视觉 */
+  .c-hero .hero-visual {
+    flex: 1;
+    position: relative;
+    display: flex;
+    gap: 2.5rem;
+    justify-content: center;
+    align-items: center;
+  }
+  .c-hero .floating-card {
+    width: 300px; height: 400px;
+    background:#fff; border-radius:20px; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.1);
+  }
+  .floating-card video {
+    max-width:100%; max-height:100%; object-fit:cover; border-radius:20px;
+  }
+  
+  /* 动画光晕 */
+  .c-hero .card-glow {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(108, 99, 255, 0.1) 0%, transparent 70%);
+    filter: blur(40px); z-index: 1;
+  }
+  
+  /* 响应式 */
+  @media (max-width: 1024px) {
+    .c-hero .container { flex-direction: column; text-align: center; }
+    .hero-ctas { justify-content:center; }
+    .hero-badges { justify-content:center; }
+  }
+  @media (max-width: 768px) {
+    .c-hero .hero-content h1 { font-size: 2.5rem; }
+    .hero-ctas { flex-direction: column; }
+  }
+  @media (max-width: 480px) {
+    .c-hero .hero-content h1 { font-size: 2rem; }
+    .hero-badges { flex-direction: column; gap:.5rem; }
+  }
+  </style>
+    

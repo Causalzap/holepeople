@@ -1,0 +1,180 @@
+<!-- components/levels-tools.html -->
+<section class="c-lv-tools">
+    <div class="lv-search-container">
+      <h1 class="lv-search-title">Hole People Game Level Guides</h1>
+      <p class="lv-search-subtitle">
+        Complete Walkthrough for 570 Levels · Strategy Tips · Hole-Filling Solutions
+      </p>
+  
+      <!-- 主搜索：按关卡号直达 -->
+      <div class="lv-search">
+        <input id="lv-input-main" type="number" inputmode="numeric" min="1" max="570"
+               placeholder="Enter level number (1–570)">
+        <button id="lv-search-btn" class="btn">
+          <i class="fas fa-search"></i> Search
+        </button>
+      </div>
+  
+      <p class="level-hint">Enter any level number between 1 and 570</p>
+  
+      <!-- 范围跳转（每 20 关） -->
+      <div class="lv-jumper">
+        <label class="lv-label" for="lv-range">Jump to range</label>
+        <div class="lv-jump-row">
+          <select id="lv-range" class="lv-select" aria-label="Level ranges"></select>
+          <button id="lv-range-go" class="btn btn-ghost">Go</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <style>
+    /* 仅作用于本组件 */
+    .c-lv-tools{
+        padding-top: 40px; /* 减少顶部间距 */
+        padding-bottom: 48px;
+      background: var(--gradient-primary, linear-gradient(135deg,#6C63FF,#36D1DC));
+      color:#fff; text-align:center;
+    }
+    .c-lv-tools .lv-search-container{ width:90%; max-width:1200px; margin:0 auto; }
+    .c-lv-tools .lv-search-title{
+      font-family:'Oxanium', cursive; font-weight:700;
+      font-size: clamp(2rem, 4vw, 3.4rem); line-height:1.15; margin-bottom:.6rem;
+      color:#fff;
+    }
+    .c-lv-tools .lv-search-subtitle{
+      font-size: clamp(1rem, 1.8vw, 1.4rem); opacity:.95; margin-bottom: 2rem; color:#fff;
+    }
+  
+    /* 大搜索框 */
+    .c-lv-tools .lv-search{
+      display:flex; align-items:center; gap:12px;
+      background:#fff; border-radius:999px; padding:8px;
+      width: min(1100px, 100%); margin: 0 auto 10px;
+      box-shadow: 0 10px 30px rgba(108,99,255,.25);
+      border: 4px solid rgba(255,255,255,.35);
+    }
+    .c-lv-tools .lv-search input{
+      flex:1; padding:18px 24px; border:none; outline:none;
+      font-size: clamp(1rem, 1.4vw, 1.25rem);
+      border-radius:999px; background:transparent; color:var(--text-dark,#2d2b4e);
+  
+      appearance: textfield;      /* 标准 */
+      -moz-appearance: textfield; /* Firefox */
+      -webkit-appearance: none;   /* Chrome / Safari */
+    }
+    .c-lv-tools .lv-search input::-webkit-outer-spin-button,
+    .c-lv-tools .lv-search input::-webkit-inner-spin-button{ -webkit-appearance: none; margin:0; }
+    .c-lv-tools .lv-search input::placeholder{ color: var(--text-light,#5a5779); opacity:.7; }
+    .c-lv-tools .lv-search .btn{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:16px 28px; border:none; cursor:pointer; border-radius:999px; font-weight:700;
+      background: var(--gradient-primary, linear-gradient(135deg,#6C63FF,#36D1DC));
+      color:#fff; box-shadow: 0 8px 22px rgba(108,99,255,.45);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .c-lv-tools .lv-search .btn:hover{ transform:translateY(-2px); box-shadow:0 12px 26px rgba(108,99,255,.55); }
+  
+    .c-lv-tools .level-hint{ margin: 10px 0 26px; opacity:.92; }
+  
+    /* Jump to range */
+    .lv-jumper{
+      width:min(920px, 100%); margin: 0 auto;
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,.18);
+      border-radius: 999px;
+      padding: 10px 14px;
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,.2);
+      display:flex; align-items:center; gap:16px; justify-content:center;
+    }
+    .lv-label{ font-weight:700; margin-right:6px; }
+    .lv-jump-row{ display:flex; gap:10px; align-items:center; }
+    .lv-select{
+        appearance:none;
+        border:none; outline:none;
+        padding:14px 44px 14px 18px;
+        min-width: 240px;
+        background:#fff;
+        color:var(--text-dark,#2d2b4e);
+        font-weight:600; border-radius:999px;
+        box-shadow:0 6px 18px rgba(0,0,0,.08);
+        background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5' stroke='%235a5779' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-repeat:no-repeat;
+        background-position:right 14px center;
+    }
+    .lv-select:focus{ box-shadow:0 0 0 3px rgba(108,99,255,.25); }
+
+    .btn.btn-ghost{
+      background: linear-gradient(135deg, rgba(255,255,255,.35), rgba(255,255,255,.15));
+      color:#fff; border: 2px solid rgba(255,255,255,.35);
+      padding:12px 22px; border-radius:999px; font-weight:700; cursor:pointer;
+    }
+  
+    /* 响应式 */
+    @media (max-width: 768px){
+      .c-lv-tools{ padding: 64px 0 40px; }
+      .c-lv-tools .lv-search{ flex-direction:column; gap:12px; padding:12px; border-width:3px; }
+      .c-lv-tools .lv-search .btn{ width:100%; justify-content:center; }
+      .c-lv-tools .lv-search input{ width:100%; background:#fff; }
+      .lv-jumper{ flex-direction:column; gap:10px; border-radius:24px; padding:14px; }
+      .lv-jump-row{ width:100%; }
+      .lv-select, .btn.btn-ghost{ width:100%; }
+    }
+  </style>
+  
+  <script>
+(function(){
+  const MAX = 570;
+
+  // 1) 主搜索
+  const inputMain = document.getElementById('lv-input-main');
+  const btnSearch = document.getElementById('lv-search-btn');
+  if (inputMain && btnSearch && !btnSearch.dataset.bound) {
+    btnSearch.dataset.bound = '1';
+    const go = () => {
+      const n = parseInt(inputMain.value, 10);
+      if (!n || n < 1 || n > MAX) { inputMain.focus(); return; }
+      location.href = `level.html?n=${n}`;
+    };
+    btnSearch.addEventListener('click', go);
+    inputMain.addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+  }
+
+  // 2) Jump to range
+  const select = document.getElementById('lv-range');
+  const btnRange = document.getElementById('lv-range-go');
+
+  // 填充分段
+  if (select && !select.dataset.filled) {
+    select.dataset.filled = '1';
+    for (let start = 1; start <= MAX; start += 20) {
+      const end = Math.min(start + 19, MAX);
+      const opt = document.createElement('option');
+      opt.value = `${start}-${end}`;
+      opt.textContent = `Level ${start}–${end}`;
+      select.appendChild(opt);
+    }
+  }
+
+  // 绑定跳转
+  if (btnRange && select && !btnRange.dataset.bound) {
+    btnRange.dataset.bound = '1';
+    btnRange.addEventListener('click', () => {
+      if (!select.value) return;
+      const [s, e] = select.value.split('-').map(n => parseInt(n, 10));
+      if (!s || !e) return;
+
+      // 更新 hash（供刷新或直链跳转）
+      const id = `g-${String(s).padStart(3,'0')}-${String(e).padStart(3,'0')}`;
+      location.hash = id;
+
+      // 通知 levels-grid 展开该组
+      window.dispatchEvent(new CustomEvent('lv:jumpToRange', { detail: { start: s, end: e }}));
+
+      // 将视图滑到网格区域
+      const grid = document.getElementById('section-levels-grid') || document.getElementById('levels-grid');
+      grid?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+})();
+</script>

@@ -1,0 +1,153 @@
+<section class="c-faq">
+    <div class="container">
+      <h2 class="section-title">Hole People <span class="highlight">FAQ</span></h2>
+      <p class="faq-intro">Find answers to the most common questions about gameplay, levels, payments, and support.</p>
+  
+      <div class="faq-grid">
+        <!-- 单个卡片 -->
+        <div class="faq-card">
+          <button class="faq-question" aria-expanded="false">
+            <span>🎮 How do I start playing Hole People?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            After downloading and installing the game, you can start exploring levels and fill characters of different colors into their corresponding holes.
+          </div>
+        </div>
+  
+        <div class="faq-card">
+          <button class="faq-question" aria-expanded="false">
+            <span>⭐ How do I complete levels?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            Fill all characters into the correct holes while ensuring your slots don’t get blocked. Different colors can only enter matching holes.
+          </div>
+        </div>
+  
+        <div class="faq-card">
+          <button class="faq-question" aria-expanded="false">
+            <span>💣 How do I handle bombs in the game?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            Tap characters of the correct color to defuse bombs before they explode, or the game will end.
+          </div>
+        </div>
+  
+        <div class="faq-card">
+          <button class="faq-question" aria-expanded="false">
+            <span>💰 Is Hole People free to play?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            Yes, Hole People is free to play with optional ads and in-app purchases for boosters and extra lives.
+          </div>
+        </div>
+  
+        <div class="faq-card">
+          <button class="faq-question" aria-expanded="false">
+            <span>🛠 What if I encounter issues?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            Contact the development team via the in-game support menu or email <strong>hypeuplab@gmail.com</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <style>
+  /* FAQ 区块 */
+  .c-faq {
+    padding: 100px 0;
+    background: var(--light-bg);
+  }
+  .c-faq .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-dark);
+  }
+  .section-title .highlight {
+    color: var(--primary);
+  }
+  .faq-intro {
+    text-align: center;
+    color: var(--text-light);
+    margin-bottom: 3rem;
+  }
+  
+  /* FAQ 卡片网格 */
+  .faq-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .faq-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    overflow: hidden;
+    transition: box-shadow .3s ease;
+  }
+  .faq-card:hover {
+    box-shadow: 0 6px 20px rgba(0,0,0,.12);
+  }
+  
+  /* 问题按钮 */
+  .faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: left;
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    color: var(--text-dark);
+  }
+  .faq-question i {
+    transition: transform .3s ease;
+  }
+  
+  /* 答案 */
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 1.5rem;
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    transition: max-height .4s ease, padding .3s ease;
+  }
+  
+  /* 展开状态 */
+  .faq-question[aria-expanded="true"] + .faq-answer {
+    max-height: 200px;
+    padding: 0 1.5rem 1.2rem;
+  }
+  .faq-question[aria-expanded="true"] i {
+    transform: rotate(180deg);
+  }
+  </style>
+  
+  <script>
+  (function(){
+    document.querySelectorAll('.faq-question').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const expanded = btn.getAttribute('aria-expanded')==='true';
+        btn.setAttribute('aria-expanded',!expanded);
+      });
+    });
+  })();
+  </script>
+  

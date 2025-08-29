@@ -1,0 +1,196 @@
+<!-- components/levels-grid.html -->
+<section class="c-lv-grid" id="section-levels-grid">
+    <div class="container">
+      <h2 class="section-title">Browse Levels by <span class="highlight">Group</span></h2>
+  
+      <div id="lv-groups" class="lv-groups"></div>
+  
+      <div class="lv-actions">
+        <button id="lv-loadmore" class="btn btn-secondary">Load More Groups</button>
+      </div>
+    </div>
+  </section>
+  
+  <style>
+    .c-lv-grid{padding:36px 0;background:#fff}
+  
+    /* 网格容器 */
+    .lv-groups{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:18px;
+    }
+  
+    /* 单个分组卡片（仅保留这一种样式，不再有上面那排小条） */
+    .lv-card{
+      background:#fff;
+      border-radius:16px;
+      padding:16px 14px 12px;
+      box-shadow:var(--shadow);
+      transition:transform .2s ease, box-shadow .2s ease;
+      position:relative;
+    }
+    .lv-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+  
+    .lv-card-head{
+      display:flex;align-items:center;gap:10px;margin-bottom:10px;
+    }
+    .lv-card-title{
+      font-weight:800;color:var(--text-dark);font-size:1.06rem;
+    }
+    .lv-count{
+      margin-left:auto;
+      background:var(--gradient-primary);
+      color:#fff;
+      padding:4px 10px;
+      border-radius:20px;
+      font-size:.8rem;
+      white-space:nowrap;
+    }
+  
+    .lv-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(42px,1fr));
+      gap:8px;
+    }
+    .lv-cell{
+      display:flex;align-items:center;justify-content:center;
+      height:40px;background:var(--light-bg);
+      border-radius:9px;color:var(--text-dark);
+      font-weight:700;text-decoration:none;
+      transition:all .15s ease
+    }
+    .lv-cell:hover{background:var(--primary);color:#fff;transform:translateY(-1px)}
+  
+    .lv-actions{ text-align:center; margin-top:22px; }
+    .btn.btn-secondary{
+      background:#fff; color:var(--primary);
+      border:2px solid var(--primary);
+      border-radius:999px; padding:10px 18px; font-weight:700
+    }
+    .btn.btn-secondary:hover{ background:var(--primary); color:#fff }
+  
+    @media (max-width:480px){
+      .lv-grid{grid-template-columns:repeat(auto-fit,minmax(34px,1fr))}
+      .lv-cell{height:34px;font-size:.85rem}
+    }
+  </style>
+  
+  <script>
+  (function () {
+    // 防止重复初始化
+    const host = document.getElementById('lv-groups');
+    if (!host) return;
+    if (host.dataset.enhanced === '1') return;
+    host.dataset.enhanced = '1';
+  
+    const MAX = 570;
+    const GROUP_SIZE = 20;
+    const FIRST_BATCH = 4; // 首屏显示 4 组
+    const LOAD_BATCH  = 4; // 每次加载 4 组
+    const CLEAR_HASH_AFTER_JUMP = true; // 跳转后清理 URL hash
+  
+    const groupsHost = host;
+    const loadMoreBtn = document.getElementById('lv-loadmore');
+    let renderedGroups = 0;
+  
+    const pad3 = n => String(n).padStart(3, '0');
+  
+    function buildGrid(start, end) {
+      const wrap = document.createElement('div');
+      wrap.className = 'lv-grid';
+      for (let n = start; n <= end; n++) {
+        const a = document.createElement('a');
+        a.className = 'lv-cell';
+        a.href = 'level.html?n=' + n;
+        a.textContent = n;
+        wrap.appendChild(a);
+      }
+      return wrap;
+    }
+  
+    // 只渲染“卡片”一种；不再渲染上面那排小条
+    function createCard(start, end) {
+      const card = document.createElement('article');
+      card.className = 'lv-card';
+      card.id = `g-${pad3(start)}-${pad3(end)}`;
+      card.setAttribute('data-start', start);
+      card.setAttribute('data-end', end);
+  
+      card.innerHTML = `
+        <div class="lv-card-head">
+          <div class="lv-card-title">Level ${start}–${end}</div>
+          <span class="lv-count">${end - start + 1}</span>
+        </div>
+      `;
+  
+      card.appendChild(buildGrid(start, end));
+      return card;
+    }
+  
+    function ensureRenderedUpTo(targetEnd) {
+      const needGroups = Math.ceil(targetEnd / GROUP_SIZE);
+      const totalGroups = Math.ceil(MAX / GROUP_SIZE);
+      const toRender = Math.min(needGroups, totalGroups);
+  
+      while (renderedGroups < toRender) {
+        const gIndex = renderedGroups; // 0-based
+        const start = gIndex * GROUP_SIZE + 1;
+        const end   = Math.min((gIndex + 1) * GROUP_SIZE, MAX);
+        groupsHost.appendChild(createCard(start, end));
+        renderedGroups++;
+      }
+  
+      if (renderedGroups >= totalGroups) {
+        loadMoreBtn?.setAttribute('disabled','disabled');
+        loadMoreBtn?.classList.add('disabled');
+        if (loadMoreBtn) loadMoreBtn.textContent = 'All Groups Loaded';
+      }
+    }
+  
+    function renderNext(batch = LOAD_BATCH) {
+      const totalGroups = Math.ceil(MAX / GROUP_SIZE);
+      const target = Math.min(renderedGroups + batch, totalGroups);
+      ensureRenderedUpTo(target * GROUP_SIZE);
+    }
+  
+    // 首屏渲染
+    ensureRenderedUpTo(FIRST_BATCH * GROUP_SIZE);
+  
+    // 加载更多
+    loadMoreBtn?.addEventListener('click', () => renderNext());
+  
+    // 滚动到指定卡片并高亮
+    function scrollToCard(start, end) {
+      ensureRenderedUpTo(end);
+      const id = `g-${pad3(start)}-${pad3(end)}`;
+      const card = document.getElementById(id);
+      if (!card) return;
+  
+      card.scrollIntoView({ behavior:'smooth', block:'start' });
+      card.style.outline = '2px solid rgba(108,99,255,.45)';
+      setTimeout(() => (card.style.outline = ''), 1200);
+  
+      if (CLEAR_HASH_AFTER_JUMP && location.hash) {
+        history.replaceState(null, '', location.pathname);
+      }
+    }
+  
+    // 接收顶部 tools 的跳转事件（保持事件名：lv:jumpToRange）
+    window.addEventListener('lv:jumpToRange', (e) => {
+      const { start, end } = e.detail || {};
+      if (start && end) scrollToCard(start, end);
+    });
+  
+    // 如有 #g-041-060 则自动定位
+    (function initHashJump(){
+      if (location.hash && /^#g-\d{3}-\d{3}$/.test(location.hash)) {
+        const [sStr, eStr] = location.hash.slice(3).split('-');
+        const start = parseInt(sStr, 10);
+        const end   = parseInt(eStr, 10);
+        if (start && end) scrollToCard(start, end);
+      }
+    })();
+  })();
+  </script>
+  

@@ -1,0 +1,88 @@
+<header class="c-header" role="banner" aria-label="Primary">
+    <nav class="navbar" role="navigation" aria-label="Main">
+      <div class="nav-brand">
+        <div class="logo" aria-hidden="true">
+            <img src="/assets/logo/logo.webp" alt="Hole People Logo" style="width:40px;height:40px;border-radius:10px;">
+        </div>
+        <span>Hole People</span>
+      </div>
+  
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="/"              class="nav-link" data-match="^/(|index\.html)$">Home</a></li>
+        <li class="nav-item"><a href="/levels.html"   class="nav-link" data-match="^/levels">Level Guides</a></li>
+        <li class="nav-item"><a href="/download.html" class="nav-link" data-match="^/download">Download</a></li>
+        <li class="nav-item"><a href="/blog.html"     class="nav-link" data-match="^/blog">Blog</a></li>
+      </ul>
+      
+  
+      <button class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-menu">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+    </nav>
+  </header>
+  
+  <style>
+  /* ===== Header (scoped) ===== */
+  .c-header{
+    position:fixed; top:0; left:0; width:100%;
+    z-index:1000;
+    background:rgba(255,255,255,0.95);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border-light);
+    box-shadow:0 5px 20px rgba(0,0,0,0.05);
+  }
+  
+  /* 内置“容器”，不依赖全局 .container */
+  .c-header .navbar{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:1rem 0;
+    width:90%; max-width:1200px; margin:0 auto;
+  }
+  
+  .c-header .nav-brand{
+    display:flex; align-items:center; gap:10px;
+    font-size:1.5rem; font-weight:700; color:var(--text-dark);
+  }
+  
+  .c-header .logo{ height:40px; }
+  
+  /* Menu (desktop) */
+  .c-header .nav-menu{
+    display:flex; list-style:none; gap:2rem; align-items:center;
+    margin:0; padding:0;
+  }
+  .c-header .nav-item{ margin:0; }
+  .c-header .nav-link{
+    font-weight:500; position:relative; color:var(--text-light);
+    text-decoration:none; transition:color .3s;
+  }
+  .c-header .nav-link:hover,
+  .c-header .nav-link.active{ color:var(--primary); }
+  .c-header .nav-link.active::after{
+    content:''; position:absolute; bottom:-5px; left:0; width:100%; height:2px;
+    background:var(--gradient-primary);
+  }
+  
+  /* Hamburger (desktop hidden) */
+  .c-header .hamburger{
+    display:none; flex-direction:column; cursor:pointer;
+    background:transparent; border:0; padding:0; margin:0;
+  }
+  .c-header .bar{ height:3px; width:25px; background-color:var(--text-dark); margin:3px 0; transition:.3s; }
+  
+  /* Mobile */
+  @media (max-width:768px){
+    .c-header .hamburger{ display:flex; }
+    .c-header .nav-menu{
+      position:fixed; left:-100%; top:70px; width:100%;
+      flex-direction:column; background:#fff; text-align:center;
+      transition:left .3s ease; padding:2rem 0; gap:0;
+      box-shadow:0 10px 15px rgba(0,0,0,.1);
+    }
+    .c-header .nav-menu.active{ left:0; }
+    .c-header .nav-item{ margin:1.5rem 0; }
+  }
+
+
+  </style>
+  

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us - Hole People</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root{
+      --primary:#1976d2;
+      --text-dark:#2c3e50;
+      --text-light:#546e7a;
+      --background:#ffffff;
+      --light-bg:#f8f9fa;
+      --border-light:#e0e0e0;
+      --gradient-primary:linear-gradient(135deg,#1976d2 0%,#42a5f5 100%);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      background-color:var(--background);
+      color:var(--text-dark);
+      line-height:1.6;
+      font-family:'Poppins',system-ui,-apple-system,"Segoe UI",Roboto,Arial,"PingFang SC","Hiragino Sans GB","Microsoft Yahei",sans-serif;
+      padding-top:72px; /* 预留 header 空间 */
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+    .c-contact-container{max-width:900px;margin:0 auto;padding:0 20px;width:100%}
+
+    .c-contact{padding:40px 0;flex:1}
+    .c-contact .back-button{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 20px;background-color:var(--primary);
+      color:#fff;text-decoration:none;border-radius:6px;
+      font-weight:500;transition:.3s;margin-bottom:20px
+    }
+    .c-contact .back-button:hover{background-color:#1565c0;transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.1)}
+
+    .c-contact .section-title{
+      text-align:center;font-size:2.2rem;margin-bottom:40px;color:var(--text-dark);
+      font-family:'Oxanium',cursive
+    }
+    .c-contact .highlight{color:var(--primary);font-weight:700}
+
+    .c-contact .contact-card{
+      background:#fff;padding:30px;margin-bottom:30px;border-radius:8px;
+      box-shadow:0 4px 12px rgba(0,0,0,.05);border:1px solid var(--border-light)
+    }
+
+    .c-contact form{display:flex;flex-direction:column;gap:20px}
+    .c-contact label{font-weight:600;margin-bottom:5px;color:var(--text-dark)}
+    .c-contact input,.c-contact textarea{
+      width:100%;padding:12px;border:1px solid var(--border-light);
+      border-radius:6px;font-size:1rem;font-family:'Poppins',sans-serif
+    }
+    .c-contact textarea{min-height:150px;resize:vertical}
+    .c-contact button{
+      padding:12px 20px;background:var(--gradient-primary);
+      color:#fff;border:none;border-radius:6px;font-weight:600;
+      cursor:pointer;transition:.3s;font-size:1rem
+    }
+    .c-contact button:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.15)}
+
+    @media(max-width:768px){
+      .c-contact .section-title{font-size:1.8rem}
+      .c-contact .contact-card{padding:20px}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div id="header-container"></div>
+
+  <!-- Contact Section -->
+  <section class="c-contact">
+    <div class="c-contact-container">
+      <a href="javascript:history.back()" class="back-button"><i class="fas fa-arrow-left"></i> Go Back</a>
+
+      <h2 class="section-title">Contact <span class="highlight">Us</span></h2>
+
+      <div class="contact-card">
+        <form action="mailto:yourmail@example.com" method="post" enctype="text/plain">
+          <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required/>
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required/>
+          </div>
+          <div>
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required></textarea>
+          </div>
+          <button type="submit"><i class="fas fa-paper-plane"></i> Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div id="footer-container"></div>
+
+  <!-- Script to inject header/footer -->
+  <script src="scripts/main.js" defer></script>
+</body>
+</html>

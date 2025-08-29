@@ -1,0 +1,11 @@
+# LLMs crawling instructions for holepeoplelevel.com
+
+# 允许所有爬虫访问整个站点
+User-agent: *
+Allow: /
+
+# 指向 LLM 专用的完整索引清单
+Sitemap: https://holepeoplelevel.com/llms-full.txt
+
+# 指向常规 sitemap（如果有的话，可以一起告诉）
+Sitemap: https://holepeoplelevel.com/sitemap.xml

@@ -1,0 +1,63 @@
+<section class="c-lv-ad">
+    <div class="container">
+        <div class="play-ad" style="position:relative;">
+            <div class="play-ad-content">
+                <h2>Ready to Play Similar Puzzle Games?</h2>
+                <p>Join thousands of players enjoying this addictive puzzle game</p>
+            </div>
+            <!-- Embedding the iframe with proper z-index -->
+            <div class="iframe-container" style="margin-top:20px; z-index: 1;">
+                <iframe src="https://colorblockjamlevel.io/bus-escape-traffic-jam.embed" 
+                        style="width:100%; height:500px; border:none; border-radius:15px; position:relative; z-index:1;"></iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<style>
+    .play-ad {
+        background: var(--gradient-primary);
+        color: #fff;
+        padding: 40px;
+        border-radius: 15px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .play-ad::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 200%;
+        background: rgba(255, 255, 255, .12);
+        transform: rotate(45deg);
+    }
+
+    .play-ad h2 {
+        color: #fff;
+        margin-bottom: 10px;
+    }
+
+    .play-ad p {
+        opacity: .9;
+        margin-bottom: 18px;
+    }
+
+    .btn {
+        transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+        background-color: #e64a19; /* Darker shade on hover */
+    }
+
+    .iframe-container {
+        margin-top: 20px;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+</style>

@@ -1,0 +1,224 @@
+// scripts/generate-sitefiles.mjs
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT_DIR  = path.resolve(__dirname, '..');
+const BASE_URL  = process.env.BASE_URL || 'http://localhost:3000';
+
+// 若存在 public 且其中有 index.html，则扫描 public；否则扫描根目录
+async function detectScanDir() {
+  const pub = path.join(ROOT_DIR, 'public');
+  try {
+    const s = await fs.stat(pub);
+    if (s.isDirectory()) {
+      await fs.stat(path.join(pub, 'index.html'));
+      return pub;
+    }
+  } catch {}
+  return ROOT_DIR;
+}
+
+const EXCLUDE_DIRS = new Set([
+  'node_modules', 'scripts', 'data', 'assets', 'components',
+  'img', 'images', '_partials', '_includes'
+]);
+
+const DEFAULTS = {
+  homepage: { changefreq: 'daily',  priority: '1.0' },
+  listpage: { changefreq: 'daily',  priority: '0.9' },
+  level:    { changefreq: 'weekly', priority: '0.8' },
+  page:     { changefreq: 'weekly',priority: '0.8' },
+};
+
+async function scanHtmlFiles(dir, acc = []) {
+  const ents = await fs.readdir(dir, { withFileTypes: true });
+  for (const ent of ents) {
+    const full = path.join(dir, ent.name);
+    if (ent.isDirectory()) {
+      if (EXCLUDE_DIRS.has(ent.name)) continue;
+      await scanHtmlFiles(full, acc);
+    } else if (ent.isFile() && ent.name.toLowerCase().endsWith('.html')) {
+      acc.push(full);
+    }
+  }
+  return acc;
+}
+
+function filePathToUrl(filePath, scanDir) {
+  const rel = path.relative(scanDir, filePath).replace(/\\/g, '/');
+  if (rel.toLowerCase() === 'index.html') return `${BASE_URL}/`;
+  return `${BASE_URL}/${rel}`;
+}
+
+async function getLastMod(filePath) {
+  try {
+    const stat = await fs.stat(filePath);
+    return stat.mtime.toISOString();
+  } catch { return null; }
+}
+
+function xmlEscape(s) {
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&apos;');
+}
+
+async function generateSitemap() {
+  const SCAN_DIR = await detectScanDir();
+  const DATA_DIR = path.join(ROOT_DIR, 'data');
+  const LEVEL_MAP_FILE  = path.join(DATA_DIR, 'level-videos.json');
+  const LEVEL_META_FILE = path.join(DATA_DIR, 'level-videos.meta.json'); // 可选
+
+  console.log('🔎 扫描目录：', SCAN_DIR.replace(ROOT_DIR, '.'));
+
+  // 1) 扫描静态 html
+  const htmlFiles = await scanHtmlFiles(SCAN_DIR);
+  const staticUrls = await Promise.all(htmlFiles.map(async fp => {
+    const loc = filePathToUrl(fp, SCAN_DIR);
+    const lastmod = await getLastMod(fp);
+    let priority   = DEFAULTS.page.priority;
+    let changefreq = DEFAULTS.page.changefreq;
+    if (loc === `${BASE_URL}/`) {
+      priority   = DEFAULTS.homepage.priority;
+      changefreq = DEFAULTS.homepage.changefreq;
+    } else if (loc.endsWith('/levels.html')) {
+      priority   = DEFAULTS.listpage.priority;
+      changefreq = DEFAULTS.listpage.changefreq;
+    }
+    return { loc, lastmod, changefreq, priority };
+  }));
+
+  // 2) 追加关卡 url
+  let levelUrls = [];
+  try {
+    const txt = await fs.readFile(LEVEL_MAP_FILE, 'utf-8');
+    const map = JSON.parse(txt);
+    const levels = Object.keys(map).map(k => parseInt(k,10))
+      .filter(Number.isFinite).sort((a,b)=>a-b);
+
+    // 可选 meta → lastmod
+    let meta = {};
+    try {
+      meta = JSON.parse(await fs.readFile(LEVEL_META_FILE, 'utf-8'));
+    } catch {}
+
+    levelUrls = levels.map(n => ({
+      loc: `${BASE_URL}/level.html?n=${n}`,
+      lastmod: (meta[String(n)]?.publishedAt || meta[String(n)]?.uploadDate) ?? null,
+      changefreq: DEFAULTS.level.changefreq,
+      priority:   DEFAULTS.level.priority
+    }));
+    console.log(`📼 读取关卡：${levels.length} 个`);
+  } catch (e) {
+    console.warn('⚠️ 跳过关卡 URL（未找到 data/level-videos.json 或解析失败）：', e.message);
+  }
+
+  // 3) 合并 & 排序
+  const byLoc = new Map();
+  [...staticUrls, ...levelUrls].forEach(u => byLoc.set(u.loc, u));
+  const urls = [...byLoc.values()].sort((a,b)=>a.loc.localeCompare(b.loc));
+
+  // 4) 写出 sitemap.xml
+  const outFile = path.join(SCAN_DIR, 'sitemap.xml');
+  const lines = [];
+  lines.push('<?xml version="1.0" encoding="UTF-8"?>');
+  lines.push('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+  for (const u of urls) {
+    lines.push('  <url>');
+    lines.push(`    <loc>${xmlEscape(u.loc)}</loc>`);
+    if (u.lastmod)    lines.push(`    <lastmod>${xmlEscape(u.lastmod)}</lastmod>`);
+    if (u.changefreq) lines.push(`    <changefreq>${xmlEscape(u.changefreq)}</changefreq>`);
+    if (u.priority)   lines.push(`    <priority>${xmlEscape(u.priority)}</priority>`);
+    lines.push('  </url>');
+  }
+  lines.push('</urlset>\n');
+  await fs.writeFile(outFile, lines.join('\n'), 'utf-8');
+  console.log(`✅ 写入：${path.relative(process.cwd(), outFile)}`);
+  return outFile;
+}
+
+async function generateRobots() {
+  const content = `# AI Crawler Rules (Site)
+# robots.txt generated by generate-sitefiles.mjs
+
+# --- Global default ---
+User-agent: *
+Allow: /
+
+# Disallow crawling of admin areas
+Disallow: /admin/
+Disallow: /cgi-bin/
+Disallow: /tmp/
+Disallow: /private/
+
+# Disallow local build/source folders (project-specific)
+Disallow: /components/
+Disallow: /assets/
+Disallow: /data/
+Disallow: /node_modules/
+Disallow: /scripts/
+
+# Disallow crawling of query parameters and certain extensions
+Disallow: /*?*
+Disallow: /*.php$
+
+# --- LLM-specific allowances/blocks ---
+User-Agent: GPTBot
+Allow: /llms.txt
+Disallow: /
+
+User-Agent: anthropic-ai
+Allow: /llms.txt
+Disallow: /
+
+# --- Search engine tuning ---
+User-Agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+Disallow: /404
+Disallow: /500
+Disallow: /*.json$
+
+# Allow specific file types (override)
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.gif$
+Allow: /*.webp$
+
+# Guide AI crawlers to LLM content (non-standard but harmless)
+LLM-Content: ${SITE_ORIGIN}/llms.txt
+LLM-Full-Content: ${SITE_ORIGIN}/llms-full.txt
+
+# Sitemaps
+Sitemap: ${SITE_ORIGIN}/sitemap.xml
+
+# Crawl-delay for aggressive bots
+Crawl-delay: 5
+`;
+  const out = path.join(ROOT_DIR, 'robots.txt');
+  await fs.writeFile(out, content, 'utf-8');
+  console.log(`✅ 写入：${path.relative(process.cwd(), out)}`);
+  return out;
+}
+
+async function main() {
+  await generateSitemap();
+  await generateRobots();
+  console.log('🎉 站点文件已生成完成。');
+  console.log(`👉 现在你可以访问：${BASE_URL}/sitemap.xml 与 ${BASE_URL}/robots.txt`);
+}
+
+main().catch(err => {
+  console.error(err);
+  process.exit(1);
+});

@@ -1,0 +1,10 @@
+# robots.txt generated automatically
+User-agent: *
+Disallow: /components/
+Disallow: /assets/
+Disallow: /data/
+Disallow: /node_modules/
+Disallow: /scripts/
+Allow: /
+
+Sitemap: http://www.holepeoplelevel.com/sitemap.xml

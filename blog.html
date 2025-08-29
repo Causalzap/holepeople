@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hole People Blog – Guides, Tips & Updates</title>
+  <meta name="description" content="Hole People blog with guides, tips, updates, and level walkthroughs. Browse categories and find the best strategies."/>
+  <meta name="theme-color" content="#6C63FF"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root{
+      --primary:#6C63FF; --accent:#36D1DC;
+      --accent:#36D1DC;
+      --gradient-primary: linear-gradient(135deg, var(--primary), var(--accent)); /* ← 新增 */
+      --light-bg:#f8f9fe; --card-bg:#fff;
+      --text-dark:#2d2b4e; --text-light:#5a5779;
+      --border:#e9ecf5; --shadow:0 10px 30px rgba(108,99,255,.15);
+      --shadow-hover:0 15px 35px rgba(108,99,255,.25);
+      --radius:14px; --transition:all .25s ease;
+      --container:1280px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--text-light); background:var(--light-bg); line-height:1.6}
+    a{color:inherit; text-decoration:none}
+    .container{width:92%; max-width:var(--container); margin:0 auto}
+
+    /* Hero */
+    .hero{padding:72px 0 28px; margin:0 0 20px; color:#fff;
+      background:linear-gradient(135deg, var(--primary), var(--accent));}
+    .hero .container{display:grid; grid-template-columns:1fr; gap:18px}
+    .hero-title{font-family:Oxanium,cursive; font-size:2.6rem; margin:8px 0 4px}
+    .hero-sub{opacity:.95; font-size:1.05rem}
+
+    /* Search & Filters */
+    .toolbar{display:flex; gap:10px; flex-wrap:wrap}
+    .search{flex:1; min-width:220px; background:#fff; border:1px solid var(--border); border-radius:12px; padding:10px 12px;
+      box-shadow:var(--shadow);}
+    .filter{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+    .chip{
+      background:#fff; border:1px solid var(--border); padding:8px 12px; border-radius:999px; cursor:pointer;
+      box-shadow:var(--shadow); transition:var(--transition); font-weight:600; font-size:.92rem;
+    }
+    .chip:hover{transform:translateY(-2px); box-shadow:var(--shadow-hover)}
+    .chip.active{background:var(--primary); color:#fff; border-color:transparent}
+
+    /* Blog Grid */
+    main{padding:26px 0 40px}
+    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px}
+    .card{
+      background:#fff; border:1px solid var(--border); border-radius:16px; overflow:hidden;
+      box-shadow:var(--shadow); transition:var(--transition); height:100%; display:flex; flex-direction:column;
+    }
+    .card:hover{transform:translateY(-4px); box-shadow:var(--shadow-hover)}
+    .thumb{aspect-ratio:16/9; width:100%; object-fit:cover; display:block; background:#eef1ff}
+    .content{padding:16px}
+    .title{color:var(--text-dark); font-weight:700; font-size:1.05rem; margin:0 0 8px}
+    .meta{display:flex; gap:10px; flex-wrap:wrap; font-size:.82rem; color:#7a7896}
+    .excerpt{margin:10px 0 0; font-size:.95rem}
+    .tag{font-weight:700}
+    .more{margin:14px 16px 16px; align-self:flex-start; font-weight:700; color:var(--primary)}
+    .more i{margin-left:6px}
+
+    /* Pagination */
+    .pagination{display:flex; gap:8px; justify-content:center; margin-top:20px}
+    .page-btn{
+      background:#fff; border:1px solid var(--border); border-radius:10px; padding:8px 12px; cursor:pointer;
+      box-shadow:var(--shadow); transition:var(--transition); font-weight:700;
+    }
+    .page-btn[disabled]{opacity:.5; pointer-events:none}
+    .page-btn:hover{transform:translateY(-2px); box-shadow:var(--shadow-hover)}
+
+    /* Footer spacing */
+    #footer-container *:last-child{margin-bottom:0}
+  </style>
+</head>
+<body>
+  <!-- Header mount -->
+  <div id="header-container" data-src="/components/header.html"></div>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="container">
+      <div>
+        <h1 class="hero-title">Hole People Blog</h1>
+        <p class="hero-sub">Guides, tips, updates, and level walkthroughs — all in one place.</p>
+      </div>
+
+      <!-- Search + Filters -->
+      <div class="toolbar">
+        <input id="search" class="search" type="search" placeholder="Search guides, levels, tips…" aria-label="Search blog"/>
+        <div class="filter" aria-label="Category filter">
+          <button class="chip active" data-cat="all">All</button>
+          <button class="chip" data-cat="guides">Guides</button>
+          <button class="chip" data-cat="levels">Levels</button>
+          <button class="chip" data-cat="news">Updates</button>
+          <button class="chip" data-cat="tips">Tips</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Blog Grid -->
+    <section aria-live="polite">
+      <div id="grid" class="grid">
+        <!-- Fallback cards -->
+        <article class="card" data-cat="guides">
+          <img class="thumb" src="assets/placeholder.webp" alt="Beginner’s Guide cover"/>
+          <div class="content">
+            <h2 class="title"><a href="/blog/beginners-guide.html">Beginner’s Guide: Start Fast</a></h2>
+            <div class="meta">
+              <span><i class="fa-regular fa-calendar"></i> May 14, 2025</span>
+              <span><i class="fa-regular fa-clock"></i> 5 min</span>
+              <span class="tag">Guides</span>
+            </div>
+            <p class="excerpt">Core mechanics, quick wins, and the best early upgrades to unlock first.</p>
+          </div>
+          <a class="more" href="/blog/beginners-guide.html">Read <i class="fa-solid fa-arrow-right"></i></a>
+        </article>
+
+        <article class="card" data-cat="levels">
+          <img class="thumb" src="assets/placeholder.webp" alt="Level 12 Walkthrough cover"/>
+          <div class="content">
+            <h2 class="title"><a href="/blog/level-12-walkthrough.html">Level 12 Walkthrough: 3-Star Route</a></h2>
+            <div class="meta">
+              <span><i class="fa-regular fa-calendar"></i> May 10, 2025</span>
+              <span><i class="fa-regular fa-clock"></i> 7 min</span>
+              <span class="tag">Levels</span>
+            </div>
+            <p class="excerpt">Pathing, timing windows, and fail-safe backups for consistent clears.</p>
+          </div>
+          <a class="more" href="/blog/level-12-walkthrough.html">Read <i class="fa-solid fa-arrow-right"></i></a>
+        </article>
+
+        <article class="card" data-cat="news">
+          <img class="thumb" src="assets/placeholder.webp" alt="Update notes cover"/>
+          <div class="content">
+            <h2 class="title"><a href="/blog/update-1102.html">Update 11.0.2 – Patch Notes</a></h2>
+            <div class="meta">
+              <span><i class="fa-regular fa-calendar"></i> May 2, 2025</span>
+              <span><i class="fa-regular fa-clock"></i> 3 min</span>
+              <span class="tag">Updates</span>
+            </div>
+            <p class="excerpt">Balance tweaks, bug fixes, and quality-of-life improvements.</p>
+          </div>
+          <a class="more" href="/blog/update-1102.html">Read <i class="fa-solid fa-arrow-right"></i></a>
+        </article>
+      </div>
+
+      <!-- Pagination -->
+      <nav class="pagination">
+        <button id="prev" class="page-btn" disabled>Previous</button>
+        <button id="next" class="page-btn">Next</button>
+      </nav>
+    </section>
+  </main>
+
+  <!-- Footer mount -->
+  <div id="footer-container" data-src="/components/footer.html"></div>
+
+  <!-- 自动注入 Header / Footer + 自动高亮 -->
+  <script defer src="/scripts/header.js"></script>
+
+  <!-- Blog filtering / search -->
+  <script defer>
+    (function(){
+      const state = { posts: [], page: 1, perPage: 9, cat: 'all', q: '' };
+      const grid = document.getElementById('grid');
+      const chips = [...document.querySelectorAll('.chip')];
+      const search = document.getElementById('search');
+      const prev = document.getElementById('prev');
+      const next = document.getElementById('next');
+
+      function render(){
+        const start = (state.page-1)*state.perPage;
+        const q = state.q.trim().toLowerCase();
+        const filtered = state.posts.filter(p => {
+          const byCat = state.cat==='all' || (p.category||'').toLowerCase()===state.cat;
+          const byQ = !q || (p.title+p.excerpt+(p.tags||[]).join(' ')).toLowerCase().includes(q);
+          return byCat && byQ;
+        });
+        const slice = filtered.slice(start, start+state.perPage);
+
+        if (slice.length){
+          grid.innerHTML = slice.map(p => `
+            <article class="card" data-cat="${p.category||''}">
+              <a href="${p.url}">
+                <img class="thumb" src="${p.cover||'assets/placeholder.webp'}" alt="${p.alt||p.title}"/>
+              </a>
+              <div class="content">
+                <h2 class="title"><a href="${p.url}">${p.title}</a></h2>
+                <div class="meta">
+                  <span><i class="fa-regular fa-calendar"></i> ${p.date||''}</span>
+                  <span><i class="fa-regular fa-clock"></i> ${p.read||''}</span>
+                  <span class="tag">${(p.category||'').charAt(0).toUpperCase()+(p.category||'').slice(1)}</span>
+                </div>
+                <p class="excerpt">${p.excerpt||''}</p>
+              </div>
+              <a class="more" href="${p.url}">Read <i class="fa-solid fa-arrow-right"></i></a>
+            </article>
+          `).join('');
+        }
+
+        prev.disabled = state.page===1;
+        next.disabled = start + state.perPage >= filtered.length;
+      }
+
+      chips.forEach(ch => ch.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('active'));
+        ch.classList.add('active');
+        state.cat = ch.dataset.cat;
+        state.page = 1;
+        render();
+      }));
+
+      search.addEventListener('input', () => {
+        state.q = search.value;
+        state.page = 1;
+        render();
+      });
+
+      prev.addEventListener('click', () => { state.page--; render(); });
+      next.addEventListener('click', () => { state.page++; render(); });
+
+      fetch('/assets/posts.json')
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+          if(data && Array.isArray(data)) {
+            state.posts = data;
+            render();
+          }
+        })
+        .catch(()=>{});
+    })();
+  </script>
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Hole People Blog",
+    "description": "Guides, tips, updates, and level walkthroughs for Hole People.",
+    "url": "/blog.html",
+    "publisher": { "@type": "Organization", "name": "Hole People Guides" }
+  }
+  </script>
+</body>
+</html>

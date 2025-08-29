@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>How Rollic Kills 1,000 Games a Year to Find Hits (Part 2)</title>
+  <meta name="description" content="Rollic’s ruthless prototype-and-test machine, Hair Challenge’s 3-level test, and why creativity beats polish. A deep dive into KPI gates, retention math, and the path from hyper-casual to hybrid casual."/>
+  <meta name="theme-color" content="#6C63FF"/>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root{
+      --primary:#6C63FF; --primary-light:#8580FF; --accent:#36D1DC;
+      --gradient:linear-gradient(135deg,var(--primary),var(--accent));
+      --text-dark:#2d2b4e; --text:#514f6e; --text-light:#7a7896;
+      --border:#e9ecf5; --light-bg:#f8f9fe;
+      --shadow:0 10px 30px rgba(108,99,255,.12);
+      --radius:16px; --transition:all .25s ease;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:var(--light-bg);
+      line-height:1.75;
+    }
+    a{color:var(--primary);text-decoration:none;transition:var(--transition)}
+    a:hover{color:var(--accent)}
+
+    /* Hero */
+    .hero{
+      padding:72px 0 34px;
+      background:var(--gradient);
+      color:#fff;
+      text-align:center;
+      display:flex; flex-direction:column; justify-content:center; align-items:center;
+    }
+    .hero .container{width:92%;max-width:1200px;margin:0 auto}
+    .hero h1{
+      font-family:'Oxanium',cursive;
+      font-size:2.4rem;
+      font-weight:700;
+      margin:0 0 12px;
+      line-height:1.3;
+    }
+    .hero p{
+      font-size:1.08rem;
+      opacity:.92;
+      margin:0 auto;
+      max-width:780px;
+    }
+
+    /* Content wrap (no card border) */
+    .post-wrap{width:min(900px,92%);margin:-28px auto 64px}
+    .thumb{
+      width:100%;
+      aspect-ratio:16/9;
+      object-fit:cover;
+      border-radius:var(--radius);
+      background:#eef1ff;
+      display:block;
+      margin-top:40px;   /* move cover down a bit under the hero */
+      margin-bottom:1.4rem;
+      box-shadow:var(--shadow);
+    }
+
+    /* Meta */
+    .meta{
+      display:flex; gap:14px; flex-wrap:wrap;
+      color:var(--text-light); font-size:.95rem;
+      margin:0 0 18px; padding-bottom:14px;
+      border-bottom:1px solid var(--border);
+    }
+    .meta span{display:inline-flex;align-items:center;gap:6px}
+
+    /* Headings & paragraphs */
+    h2{
+      color:var(--text-dark);
+      font-family:Oxanium,cursive;
+      font-size:1.55rem;
+      margin:1.9rem 0 1rem;
+      position:relative;
+      padding-left:14px;
+    }
+    h2::before{
+      content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
+      width:6px;height:24px;border-radius:3px;background:var(--gradient);
+    }
+    p{margin:1rem 0;font-size:1.05rem}
+    ul{margin:.75rem 0 1rem 1.1rem}
+    li{margin:.35rem 0}
+
+    /* Inline callouts */
+    .note{
+      background:linear-gradient(90deg,rgba(108,99,255,.06),rgba(54,209,220,.06));
+      border-left:4px solid var(--primary);
+      border-radius:0 12px 12px 0;
+      padding:12px 14px;
+      margin:1.1rem 0;
+    }
+    .hr{height:1px;background:var(--border);margin:2rem 0}
+
+    /* In-article quick nav (internal links + level deep links) */
+    .quick-nav{
+      display:flex;gap:8px;flex-wrap:wrap;margin:1rem 0 1.2rem
+    }
+    .chip{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:.45rem .75rem;border:1px solid var(--border);border-radius:999px;
+      background:#fff; box-shadow:var(--shadow); font-weight:600; font-size:.92rem;
+      transition:var(--transition)
+    }
+    .chip:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(108,99,255,.16)}
+
+    /* Recommended Levels (bottom cards) */
+    .recommended{margin:2.4rem 0 1.4rem}
+    .recommended h3{
+      font-family:Oxanium,cursive; color:var(--text-dark);
+      font-size:1.6rem; text-align:center; margin:0 0 1.4rem; position:relative;
+    }
+    .recommended h3::after{
+      content:""; position:absolute; left:50%; bottom:-10px; transform:translateX(-50%);
+      width:62px; height:3px; border-radius:2px; background:var(--gradient);
+    }
+    .grid{display:grid;gap:16px;grid-template-columns:repeat(2,1fr)}
+    .card{
+      background:#fff; border:1px solid var(--border); border-radius:14px;
+      padding:18px; text-align:center; box-shadow:var(--shadow); transition:var(--transition);
+    }
+    .card:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(108,99,255,.16)}
+    .num{font-family:Oxanium,cursive;font-weight:700;font-size:1.3rem;color:var(--primary);margin-bottom:.35rem}
+    .desc{color:var(--text-light);font-size:.92rem;margin-bottom:.9rem}
+    .play{display:inline-block;padding:.55rem 1.05rem;border-radius:999px;background:var(--gradient);color:#fff;font-weight:600}
+
+    /* Pager */
+    .pager{display:flex;justify-content:space-between;gap:12px;margin-top:24px}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;padding:11px 16px;
+      border:1px solid var(--border); border-radius:10px; background:#fff;
+      color:var(--text-dark); font-weight:700; box-shadow:var(--shadow);
+      transition:var(--transition)
+    }
+    .btn:hover{border-color:var(--primary-light);color:var(--primary);transform:translateY(-2px)}
+
+    /* Responsive */
+    @media (max-width:900px){ .grid{grid-template-columns:1fr} }
+    @media (max-width:768px){
+      .hero{padding:66px 0 28px}
+      .hero h1{font-size:2.05rem}
+      .hero p{font-size:1.02rem}
+      h2{font-size:1.35rem}
+      .pager{flex-direction:column}
+      .btn{justify-content:center}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header injected by /scripts/header.js -->
+  <div id="header-container" data-src="/components/header.html"></div>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="container">
+      <h1>How Rollic Kills 1,000 Games a Year to Find Hits (Part 2)</h1>
+      <p>The ruthless prototype-and-test machine, Hair Challenge’s 3-level test, and why creativity beats polish in crowded genres.</p>
+    </div>
+  </header>
+
+  <!-- Article -->
+  <main class="post-wrap">
+    <article>
+      <!-- 封面图（可选：若不需要，直接删除下面这一行） -->
+      <img class="thumb" src="/assets/blog/rollic-games-office-team.webp" alt="Rollic Games CEO Burak Vardal brainstorming creative hits and rapid prototyping with the team.">
+
+      <div class="meta">
+        <span><i class="fa-regular fa-calendar"></i> May 20, 2025</span>
+        <span><i class="fa-regular fa-clock"></i> 9–11 min</span>
+        <span><i class="fa-solid fa-tag"></i> Tips</span>
+      </div>
+
+      <!-- 快速导航：站内篇章 & 6 个关卡内链 -->
+      <div class="quick-nav" aria-label="Quick navigation">
+        <a class="chip" href="/blog/rollic-part1.html"><i class="fa-solid fa-book-open"></i> Part 1</a>
+        <a class="chip" href="/blog/rollic-part3.html"><i class="fa-solid fa-book"></i> Part 3</a>
+        <a class="chip" href="/levels.html"><i class="fa-solid fa-map"></i> All Levels</a>
+        <a class="chip" href="/download.html"><i class="fa-solid fa-download"></i> Download</a>
+      </div>
+
+      <p><em>This article continues our deep dive into Rollic’s operating system for discovering repeatable hits. If you haven’t yet, start with</em> <a href="/blog/rollic-part1.html">Part 1</a> <em>for context on Turkey’s ecosystem, the shift from hyper-casual to hybrid, and why “fun first” naturally leads to IAP.</em></p>
+
+      <h2>From prototype to product: Rollic’s loop</h2>
+      <p>Rollic treats prototyping as a throughput problem: ideas must move quickly from a playable core to a clear data signal—or be killed. That mindset turns “failure” into velocity. The team runs hundreds of small experiments each month, eliminating anything that doesn’t clear <strong>tight KPI gates</strong> (e.g., CPI/CTR fit, Day-1 retention, and early engagement minutes). What survives is a small subset with unmistakable pull.</p>
+      <p>Why is this so effective? Because mobile is now saturated with immaculate production. The scarce resource isn’t polish—it’s <strong>novelty that sticks</strong>. Rollic’s leaders are core gamers; they recognize strong gamefeel and emergent mastery faster than a slide deck can describe it. That lets the studio accept creative risk early while staying financially conservative overall.</p>
+
+      <h2>Hair Challenge: 3 levels, 56% D1</h2>
+      <p>One famous internal example is <em>Hair Challenge</em>. The team entered testing with just <strong>three levels</strong>, yet posted around <strong>56% Day-1 retention</strong>—a ludicrously strong signal for a build with minimal content. That result demolishes a common misconception: <strong>volume does not create fun</strong>. Instead, fun emerges from a crisp loop, satisfying input, and a legible challenge curve. When those three lock in, content can scale later without warping the core.</p>
+      <div class="note"><strong>Design takeaway:</strong> If three levels can’t produce a clean signal, thirty won’t fix it. Add content <em>after</em> the core makes people voluntarily repeat.</div>
+      <p>For teams building puzzle, runner, or tactile skill games, the order of operations should be:</p>
+      <ul>
+        <li><strong>Feel first:</strong> input latency, collision forgiveness, audio feedback, reward timing.</li>
+        <li><strong>Legibility second:</strong> early clarity about goals, progress, and fail states.</li>
+        <li><strong>Depth third:</strong> surprising interactions, risk-reward dilemmas, and compounding mastery.</li>
+      </ul>
+
+      <h2>KPI gates that prevent wishful thinking</h2>
+      <p>Rollic’s “1,000-kill” culture works because the gates are <em>simple and merciless</em>. Teams know the bar, and they either exceed it or move on. A typical flow:</p>
+      <ul>
+        <li><strong>Marketability pass:</strong> Concept + 10–15s creatives → Does it earn clicks at a sustainable CPI? If not, kill.</li>
+        <li><strong>Core loop pass (D0/D1):</strong> Minimal build to test stickiness (repeat sessions, avg. session length, tutorial exit). If flat, kill.</li>
+        <li><strong>Early retention pass:</strong> D1 and D3 trended with proper cohort cuts (avoid paid spikes). If retention is brittle, kill or rebuild core.</li>
+        <li><strong>Expansion readiness:</strong> Only then add meta, economies, or progression spines.</li>
+      </ul>
+      <p>This prevents the “content bloat trap” where teams keep building assets to “save” a weak core. In Rollic’s framing, that’s sunk-cost thinking—<em>fun is either present or it’s not</em>.For broader industry benchmarks, see <a href="https://www.blog.udonis.co/mobile-marketing/mobile-games/mobile-game-kpis" target="_blank" rel="noopener">GameAnalytics’ guide to mobile game KPIs</a>.</p>
+
+      <h2>Retention math for touch-first games</h2>
+      <p>Retention isn’t magic. For tactile games, early retention follows the quality of <em>moments-to-mastery</em>. If a player hits a satisfying micro-skill in the first two minutes, they’ll chase the “clean run” or “perfect placement” loop. Two practical rules:</p>
+      <ul>
+        <li><strong>Less friction than the genre norm:</strong> One extra tap or a noisy UI layer can drop D1 by entire points.</li>
+        <li><strong>Earlier “I can do better” moment:</strong> If that realization happens before minute 2, you’ll feel it in session count.</li>
+      </ul>
+      <p>Want examples you can apply today? Try a short run on <strong>Hole People</strong> <a href="/level.html?n=125#strategy">Level 125</a> or a puzzle sprint on <a href="/level.html?n=256#pathing">Level 256</a>. If players instantly articulate a plan—“I’ll retry and shave two moves”—you’ve built a retention seed.</p>
+
+      <h2>Creativity over polish (and how to hire for it)</h2>
+      <p>Rollic separates <strong>execution quality</strong> from <strong>creativity</strong>. In crowded genres, a “perfect clone” is invisible. What breaks through is a <em>fresh mechanic</em> or a <em>novel reading</em> of an old one—then bring production up to par. Hiring follows that logic: seek players who can name their top five control feels or explain why a certain failure state is “fair.” Those instincts predict prototype success more than résumé keywords.</p>
+      <ul>
+        <li><strong>Interview prompt:</strong> “Here’s a boxed toy loop. In one hour, make a 10-screen Figma or paper prototype that someone would replay twice.”</li>
+        <li><strong>Observation:</strong> Great candidates cut scope, choose one resonant verb, and design failure that teaches.</li>
+      </ul>
+
+      <h2>From publisher to studio investor</h2>
+      <p>Rollic is steadily becoming a <strong>studio-network investor</strong>: fewer partners, higher bar, deeper craft alignment. The model echoes Take-Two’s multi-studio approach—optimize for <em>long-term throughput of hits</em>, not raw title count. For founders, this means a tighter fit matters more than ever: be clear about <em>your loop expertise</em> (tactile runners, spatial puzzles, timing-driven action) and the <em>KPIs you can repeatedly deliver</em>.</p>
+
+      <h2>Week-0 test plan you can copy</h2>
+      <ul>
+        <li><strong>Day 1:</strong> Prototype the verb. Two inputs max. No meta.</li>
+        <li><strong>Day 2:</strong> Add one fail that teaches, one high-satisfaction success.</li>
+        <li><strong>Day 3:</strong> 10–15s ad creatives. Validate CPI/CTR sanity.</li>
+        <li><strong>Day 4:</strong> Tighten feel: input buffering, hit windows, audiovisual pop.</li>
+        <li><strong>Day 5:</strong> Small closed test. Track first 5 minutes: #attempts, replays, voluntary restarts.</li>
+      </ul>
+      <div class="note"><strong>Sanity check:</strong> If testers don’t voluntarily retry within 2 minutes, you’re not there yet. Reset the loop—not the content.</div>
+
+      <h2>Hybrid monetization is a result, not a strategy</h2>
+      <p>Rollic’s shift to hybrid wasn’t a deck decision. Once the core loop holds month-scale attention, <strong>IAP becomes natural</strong>—players want finer control, time compression, or cosmetic identity. Ads stay for broader audiences. A healthy hybrid profile looks like:</p>
+      <ul>
+        <li><strong>Ads:</strong> optional retries, hints, light boosts; never block core agency.</li>
+        <li><strong>IAP:</strong> mastery accelerators, cosmetic identity, and “session anchors” (e.g., daily packs).</li>
+      </ul>
+      <p>Ship ads first to validate volume; add IAP when you’ve confirmed players care about shaving time or expressing skill. If you need IAP to save engagement, the loop is weak.For a deeper industry perspective, check <a href="https://www.deconstructoroffun.com/blog/2024/11/19/meta-x-kwalee-leveling-up-mobile-gaming-with-hybrid-monetization-and-ai" target="_blank" rel="noopener">Deconstructor of Fun’s breakdown of hybrid casual monetization</a>.</p>
+
+      <h2>Pitfalls that kill otherwise good games</h2>
+      <ul>
+        <li><strong>Meta too early:</strong> Progression can mask a flat loop for a week, then retention collapses.</li>
+        <li><strong>Over-failing players:</strong> Punishment without control feels random; retention craters.</li>
+        <li><strong>Pretty but inert:</strong> Visuals that don’t inform play waste attention budget.</li>
+        <li><strong>“We’ll fix it with content”:</strong> Scaling a mid loop increases cost, not fun.</li>
+      </ul>
+
+      <h2>Try these level scenarios to feel the difference</h2>
+      <p>Want to experience clean “I can do better” loops? Start with <a href="/level.html?n=312#setup">Level 312</a> for strategic placement and <a href="/level.html?n=78#guide">Level 78</a> for onboarding clarity. If you prefer mastery races, <a href="/level.html?n=420#master">Level 420</a> and <a href="/level.html?n=189#speedrun">Level 189</a> highlight speed-skill tuning. As you play, note when you <em>decide</em> to retry—that decision point is the heartbeat of retention.</p>
+
+      <div class="hr"></div>
+
+      <!-- Recommended Levels -->
+      <section id="recommended-levels" class="recommended" aria-labelledby="rec-title">
+        <h3 id="rec-title">Recommended Levels</h3>
+        <div class="grid">
+          <div class="card">
+            <div class="num">Level 125</div>
+            <div class="desc">Advanced Puzzle Challenge</div>
+            <a class="play" href="/level.html?n=125#strategy">Play Now</a>
+          </div>
+          <div class="card">
+            <div class="num">Level 256</div>
+            <div class="desc">Color Matching Expert</div>
+            <a class="play" href="/level.html?n=256#pathing">Play Now</a>
+          </div>
+          <div class="card">
+            <div class="num">Level 312</div>
+            <div class="desc">Strategic Block Placement</div>
+            <a class="play" href="/level.html?n=312#setup">Play Now</a>
+          </div>
+          <div class="card">
+            <div class="num">Level 78</div>
+            <div class="desc">Beginner's Guide</div>
+            <a class="play" href="/level.html?n=78#guide">Play Now</a>
+          </div>
+          <div class="card">
+            <div class="num">Level 420</div>
+            <div class="desc">Master Level Challenge</div>
+            <a class="play" href="/level.html?n=420#master">Play Now</a>
+          </div>
+          <div class="card">
+            <div class="num">Level 189</div>
+            <div class="desc">Speed Run Favorite</div>
+            <a class="play" href="/level.html?n=189#speedrun">Play Now</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="hr"></div>
+
+      <!-- Pager -->
+      <nav class="pager" aria-label="Pagination">
+        <a class="btn" href="/blog/rollic-part1.html"><i class="fa-solid fa-arrow-left"></i> Part 1</a>
+        <a class="btn" href="/blog/rollic-part3.html">Next: Talent, Tests & Monetization <i class="fa-solid fa-arrow-right"></i></a>
+      </nav>
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer-container" data-src="/components/footer.html"></div>
+
+  <!-- Header/Footer injection + nav highlight -->
+  <script defer src="/scripts/header.js"></script>
+
+  <!-- JSON-LD for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"BlogPosting",
+    "headline":"How Rollic Kills 1,000 Games a Year to Find Hits (Part 2)",
+    "description":"Rollic’s ruthless prototype-and-test machine, Hair Challenge’s 3-level test, and why creativity beats polish. KPI gates, retention math, and the path from hyper-casual to hybrid.",
+    "author":{"@type":"Organization","name":"Hole People Guides"},
+    "publisher":{"@type":"Organization","name":"Hole People Guides"},
+    "datePublished":"2025-08-23",
+    "image":"/assets/blog/rollic-lab.webp",
+    "mainEntityOfPage":{"@type":"WebPage","@id":"/blog/rollic-part2.html"}
+  }
+  </script>
+</body>
+</html>

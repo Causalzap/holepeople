@@ -1,0 +1,16 @@
+{
+  "name": "holepeople",
+  "version": "1.0.0",
+  "description": "Hole People 游戏攻略网站",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "sitefiles": "node scripts/generate-sitefiles.mjs",
+    "sitemap": "node scripts/generate-sitefiles.mjs"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "serve-favicon": "^2.5.1"
+  }
+}

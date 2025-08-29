@@ -1,0 +1,214 @@
+<section id="section-how-to-play" class="c-howto">
+    <div class="c-howto-container">
+      <h2 class="section-title">How to Play <span class="highlight">Hole People</span>?</h2>
+  
+      <div class="controls-grid">
+        <!-- 左边：玩法要点（彩色卡片） -->
+        <ul class="howto-cards">
+          <li class="howto-card">
+            <span class="howto-icon gradient-blue"><i class="fa fa-layer-group"></i></span>
+            <div>
+              <h4>Empty Front Rows</h4>
+              <p>Make space and manage your available slots wisely.<br>
+                <small>👉 Essential strategy to progress into harder levels smoothly.</small>
+              </p>
+            </div>
+          </li>
+          <li class="howto-card">
+            <span class="howto-icon gradient-purple"><i class="fa fa-palette"></i></span>
+            <div>
+              <h4>Match Colors</h4>
+              <p>Different colors block each other, plan carefully.<br>
+                <small>👉 Master color-matching mechanics to solve advanced puzzles.</small>
+              </p>
+            </div>
+          </li>
+          <li class="howto-card">
+            <span class="howto-icon gradient-green"><i class="fa fa-chess-knight"></i></span>
+            <div>
+              <h4>Plan Moves Ahead</h4>
+              <p>Once your slots are full, it’s game over.<br>
+                <small>👉 Strategic foresight helps secure three-star victories.</small>
+              </p>
+            </div>
+          </li>
+          <li class="howto-card">
+            <span class="howto-icon gradient-orange"><i class="fa fa-th"></i></span>
+            <div>
+              <h4>1000+ Levels</h4>
+              <p>Each stage adds new puzzles and harder layouts.<br>
+                <small>👉 Endless challenges designed to test your puzzle-solving skills.</small>
+              </p>
+            </div>
+          </li>
+          <li class="howto-card">
+            <span class="howto-icon gradient-red"><i class="fa fa-user-secret"></i></span>
+            <div>
+              <h4>Beware Cape Man</h4>
+              <p>Drop only when their capes are open.<br>
+                <small>👉 A unique timing obstacle that requires precision and patience.</small>
+              </p>
+            </div>
+          </li>
+          <li class="howto-card">
+            <span class="howto-icon gradient-cyan"><i class="fa fa-bolt"></i></span>
+            <div>
+              <h4>New Obstacles</h4>
+              <p>Moving platforms, locked slots, and UFO abductors.<br>
+                <small>👉 Fresh mechanics keep gameplay dynamic and engaging.</small>
+              </p>
+            </div>
+          </li>
+          <li class="howto-card">
+            <span class="howto-icon gradient-gold"><i class="fa fa-trophy"></i></span>
+            <div>
+              <h4>Three-Star Victories</h4>
+              <p>Aim for maximum rewards on every level.<br>
+                <small>👉 Collect stars to unlock achievements and bragging rights.</small>
+              </p>
+            </div>
+          </li>
+          <li class="howto-card">
+            <span class="howto-icon gradient-pink"><i class="fa fa-play-circle"></i></span>
+            <div>
+              <h4>600+ Tutorials</h4>
+              <p>Walkthrough videos to help master tricky stages.<br>
+                <small>👉 Step-by-step guides ensure you never get stuck again.</small>
+              </p>
+            </div>
+          </li>
+        </ul>
+  
+        <!-- 右边：视频预览 -->
+        <div class="howto-video">
+          <video autoplay muted loop playsinline width="280">
+            <source src="assets/videos/hole-people-gameplay-strategy-tutorial.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <p class="video-caption">Hole People Gameplay Tutorial – Learn strategies and tips</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <style>
+  .c-howto {
+    padding: 100px 0;
+    background: var(--light-bg);
+  }
+  .c-howto-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .c-howto .section-title {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--text-dark);
+    position: relative;
+  }
+  .c-howto .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+  }
+  /* 网格布局 */
+  .controls-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  /* 卡片列表 */
+  .howto-cards {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(240px, 1fr));
+    gap: 16px 18px;
+  }
+  .howto-card {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: #fff;
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 6px 18px rgba(20, 20, 50, .05);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .howto-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(20, 20, 50, .08);
+    border-color: rgba(108,99,255,.25);
+  }
+  .howto-icon {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 18px;
+    box-shadow: 0 6px 16px rgba(0,0,0,.15);
+  }
+  .howto-card h4 {
+    margin: 0 0 4px;
+    font-size: 16px;
+    line-height: 1.25;
+    color: var(--text-dark);
+    font-weight: 700;
+  }
+  .howto-card p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-light);
+    line-height: 1.45;
+  }
+  .howto-card p small {
+    display: block;
+    font-size: 12px;
+    margin-top: 3px;
+    color: rgba(108, 99, 255, .9);
+    font-weight: 500;
+  }
+  /* 不同渐变色 */
+  .gradient-blue { background: linear-gradient(135deg,#4facfe,#00f2fe); }
+  .gradient-purple { background: linear-gradient(135deg,#8e2de2,#4a00e0); }
+  .gradient-green { background: linear-gradient(135deg,#43e97b,#38f9d7); }
+  .gradient-orange { background: linear-gradient(135deg,#ff9966,#ff5e62); }
+  .gradient-red { background: linear-gradient(135deg,#f00000,#dc281e); }
+  .gradient-cyan { background: linear-gradient(135deg,#00c6ff,#0072ff); }
+  .gradient-gold { background: linear-gradient(135deg,#f7971e,#ffd200); }
+  .gradient-pink { background: linear-gradient(135deg,#ff758c,#ff7eb3); }
+  /* 视频样式 */
+  .howto-video {
+    text-align: center;
+  }
+  .howto-video video {
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  }
+  .video-caption {
+    margin-top: .75rem;
+    font-size: .95rem;
+    color: var(--text-light);
+  }
+  /* 响应式 */
+  @media (max-width: 992px) {
+    .controls-grid { grid-template-columns: 1fr; }
+    .howto-cards { grid-template-columns: 1fr; }
+    .howto-video { order: -1; margin-bottom: 20px; }
+  }
+  </style>
+  

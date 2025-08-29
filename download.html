@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Download Hole People – iOS, Android, and Web</title>
+  <meta name="description" content="Download Hole People for iOS and Android, or play on the web. Get the latest version, system requirements, and step-by-step installation guide."/>
+  <meta name="theme-color" content="#6C63FF"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root{
+      --primary:#6C63FF; --primary-light:#8580FF; --accent:#36D1DC;
+      --gradient-primary: linear-gradient(135deg, var(--primary), var(--accent));
+      --light-bg:#f8f9fe; --card-bg:#fff;
+      --text-dark:#2d2b4e; --text-light:#5a5779;
+      --border:#e9ecf5; --shadow:0 10px 30px rgba(108,99,255,.15);
+      --shadow-hover:0 15px 35px rgba(108,99,255,.25);
+      --radius:14px; --transition:all .25s ease;
+      --container:1280px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--text-light); background:var(--light-bg); line-height:1.6}
+    a{color:inherit}
+    .container{width:92%; max-width:var(--container); margin:0 auto}
+
+    /* Hero */
+    .hero{padding:72px 0 28px; margin:0 0 20px;
+      background:var(--gradient-primary); color:#fff;}
+    .hero .container{display:grid; grid-template-columns:1fr; gap:28px;}
+    .hero-title{font-family:Oxanium,cursive; font-size:2.6rem; margin:8px 0 10px}
+    .hero-sub{opacity:.95; font-size:1.05rem}
+    .hero-card{background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18);
+      border-radius:18px; padding:20px; backdrop-filter:blur(6px);
+      box-shadow:0 12px 30px rgba(0,0,0,.15);}
+
+    /* Store buttons */
+    .store-grid{margin-top:18px; display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px;}
+    .store-btn{display:flex; align-items:center; gap:12px; padding:14px 16px;
+      border-radius:12px; background:#fff; color:var(--text-dark);
+      text-decoration:none; font-weight:700; border:1px solid var(--border);
+      box-shadow:var(--shadow); transition:var(--transition);}
+    .store-btn:hover{transform:translateY(-3px); box-shadow:var(--shadow-hover)}
+    .store-btn i{font-size:1.25rem; color:var(--primary)}
+    .sub{display:block; font-size:.78rem; font-weight:600; color:var(--text-light)}
+    .main{display:block; font-size:1.05rem}
+    .apk-note{font-size:.85rem; opacity:.9}
+    .meta{display:block; font-size:.78rem; color:#666; margin-top:2px}
+
+    /* Section cards */
+    section.block{padding:28px 0}
+    .card{background:#fff; border:1px solid var(--border); border-radius:var(--radius);
+      box-shadow:var(--shadow); padding:22px;}
+    .section-title{font-family:Oxanium,cursive; color:var(--text-dark); font-size:1.8rem; margin:0 0 16px;
+      position:relative; display:inline-block;}
+    .section-title:after{content:''; position:absolute; left:0; bottom:-8px; height:3px; width:64px;
+      background:var(--gradient-primary); border-radius:2px;}
+
+    /* Steps */
+    .steps{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px}
+    .step{background:var(--light-bg); border-radius:12px; padding:14px 14px 12px; border:1px dashed var(--border)}
+    .step b{color:var(--primary)} .step i{color:var(--primary); margin-right:8px}
+
+    /* Requirements / Features / FAQ */
+    .req-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px}
+    .req{background:var(--light-bg); border-radius:12px; padding:14px; border:1px solid var(--border)}
+    .req h4{margin:0 0 8px; color:var(--text-dark)}
+    .feat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px}
+    .feat{background:#fff; border:1px solid var(--border); padding:16px; border-radius:12px}
+    .feat i{color:var(--primary); margin-right:8px}
+    .faq{display:grid; grid-template-columns:1fr; gap:10px}
+    details.faq-item{background:#fff; border:1px solid var(--border); border-radius:12px; padding:14px}
+    details summary{cursor:pointer; font-weight:700; color:var(--text-dark)}
+    details[open]{box-shadow:var(--shadow)}
+
+    #footer-container *:last-child{margin-bottom:0}
+  </style>
+</head>
+<body>
+  <!-- Header（由 /scripts/header.js 注入） -->
+  <div id="header-container" data-src="/components/header.html"></div>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="container">
+      <div>
+        <h1 class="hero-title">Download Hole People</h1>
+        <p class="hero-sub">Get the latest version for iOS and Android, or play instantly on the web. Fast, safe, and always up-to-date.</p>
+        <div class="hero-card">
+          <div class="store-grid" id="store-grid">
+            <a class="store-btn" id="btn-ios"
+               href="https://apps.apple.com/us/app/hole-people/id6477853705"
+               target="_blank" rel="nofollow noopener noreferrer">
+              <i class="fa-brands fa-apple"></i>
+              <span>
+                <span class="sub">Available on</span>
+                <span class="main">App Store (iOS)</span>
+                <small class="meta" id="meta-ios"></small>
+              </span>
+            </a>
+
+            <a class="store-btn" id="btn-android"
+               href="https://play.google.com/store/apps/details?id=com.hyperup.holepeople&hl=en"
+               target="_blank" rel="nofollow noopener noreferrer">
+              <i class="fa-brands fa-google-play"></i>
+              <span>
+                <span class="sub">Get it on</span>
+                <span class="main">Google Play (Android)</span>
+                <small class="meta" id="meta-android"></small>
+              </span>
+            </a>
+
+            <a class="store-btn" id="btn-apk"
+               href="assets/holepeople.apk" download
+               type="application/vnd.android.package-archive"
+               rel="nofollow noopener noreferrer">
+              <i class="fa-solid fa-file-arrow-down"></i>
+              <span>
+                <span class="sub">Direct</span>
+                <span class="main">APK Download</span>
+                <span class="sub apk-note">Latest signed build</span>
+                <small class="meta" id="meta-apk"></small>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Steps -->
+    <section class="block">
+      <div class="container card">
+        <h2 class="section-title">How to Install</h2>
+        <div class="steps">
+          <div class="step"><p><i class="fa-solid fa-magnifying-glass"></i><b>iOS:</b> Tap <em>App Store</em>, then Install.</p></div>
+          <div class="step"><p><i class="fa-solid fa-mobile-screen-button"></i><b>Android:</b> Open <em>Google Play</em> and Install.</p></div>
+          <div class="step"><p><i class="fa-solid fa-shield-halved"></i><b>APK:</b> Allow “Install unknown apps”, then open the APK file.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Requirements -->
+    <section class="block">
+      <div class="container card">
+        <h2 class="section-title">System Requirements</h2>
+        <div class="req-grid">
+          <div class="req">
+            <h4>iOS</h4>
+            <ul>
+              <li>iOS 12.0 or later</li>
+              <li>iPhone / iPad supported</li>
+              <li>~200MB free storage</li>
+            </ul>
+          </div>
+          <div class="req">
+            <h4>Android</h4>
+            <ul>
+              <li>Android 7.0 (Nougat) or later</li>
+              <li>2GB RAM (4GB recommended)</li>
+              <li>~200MB free storage</li>
+            </ul>
+          </div>
+          <div class="req">
+            <h4>Web</h4>
+            <ul>
+              <li>Modern browser (Chrome/Edge/Safari/Firefox)</li>
+              <li>Stable network recommended</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="block">
+      <div class="container card">
+        <h2 class="section-title">Why Download from Here</h2>
+        <div class="feat-grid">
+          <div class="feat"><p><i class="fa-solid fa-bolt"></i><b>Always Up-to-Date:</b> Latest official version links.</p></div>
+          <div class="feat"><p><i class="fa-solid fa-lock"></i><b>Safe & Verified:</b> Store links and checksummed APK.</p></div>
+          <div class="feat"><p><i class="fa-solid fa-circle-info"></i><b>Clear Guides:</b> Steps, tips, and requirements in one page.</p></div>
+          <div class="feat"><p><i class="fa-solid fa-headset"></i><b>Support:</b> Quick links to help and walkthroughs.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="block">
+      <div class="container card">
+        <h2 class="section-title">FAQ</h2>
+        <div class="faq">
+          <details class="faq-item">
+            <summary>Is the APK safe?</summary>
+            <div>We only link to signed builds. Always download from trusted sources.<br>
+              <small>SHA-256: <code id="apk-hash">—</code></small>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>Can I play without installing?</summary>
+            <div>Yes. Use <b>Play on the Web</b> to start instantly on desktop or mobile.</div>
+          </details>
+          <details class="faq-item">
+            <summary>How do I update to the latest version?</summary>
+            <div>Open this page again and install via App Store / Google Play or re-download the APK.</div>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer（由 /scripts/header.js 注入） -->
+  <div id="footer-container" data-src="/components/footer.html"></div>
+
+  <!-- 统一引入：自动注入 Header/Footer + 自动高亮导航 -->
+  <script defer src="/scripts/header.js"></script>
+
+
+  <!-- JSON-LD（可保留/可去掉） -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Hole People",
+    "operatingSystem": "iOS, Android, Web",
+    "applicationCategory": "Game",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "description": "Download Hole People for iOS and Android, or play on the web. Latest version, system requirements, and installation guide.",
+    "url": "/download.html",
+    "publisher": { "@type": "Organization", "name": "Hole People Guides" }
+  }
+  </script>
+</body>
+</html>

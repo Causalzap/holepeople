@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Terms of Service - Hole People</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root{
+      --primary:#1976d2;
+      --text-dark:#2c3e50;
+      --text-light:#546e7a;
+      --background:#ffffff;
+      --light-bg:#f8f9fa;
+      --border-light:#e0e0e0;
+      --gradient-primary:linear-gradient(135deg,#1976d2 0%,#42a5f5 100%);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      background-color:var(--background);
+      color:var(--text-dark);
+      line-height:1.6;
+      font-family:'Poppins',system-ui,-apple-system,"Segoe UI",Roboto,Arial,"PingFang SC","Hiragino Sans GB","Microsoft Yahei",sans-serif;
+      padding-top:72px; /* 预留 header 空间 */
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+    .c-terms-container{max-width:1200px;margin:0 auto;padding:0 20px;width:100%}
+
+    .c-terms{padding:40px 0;flex:1}
+    .c-terms .back-button{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 20px;background-color:var(--primary);
+      color:#fff;text-decoration:none;border-radius:6px;
+      font-weight:500;transition:.3s;margin-bottom:20px
+    }
+    .c-terms .back-button:hover{background-color:#1565c0;transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.1)}
+
+    .c-terms .section-title{
+      text-align:center;font-size:2.2rem;margin-bottom:40px;color:var(--text-dark);
+      font-family:'Oxanium',cursive
+    }
+    .c-terms .highlight{color:var(--primary);font-weight:700}
+    .c-terms .terms-content{max-width:900px;margin:0 auto}
+
+    .c-terms .terms-card{
+      background:#fff;padding:30px;margin-bottom:30px;border-radius:8px;
+      box-shadow:0 4px 12px rgba(0,0,0,.05);border:1px solid var(--border-light)
+    }
+    .c-terms .terms-card h2{
+      color:var(--primary);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border-light);
+      font-family:'Oxanium',cursive
+    }
+    .c-terms .terms-card h3{
+      color:var(--primary);margin:25px 0 15px;font-family:'Oxanium',cursive
+    }
+    .c-terms .terms-card p{color:var(--text-light);margin-bottom:15px;line-height:1.7}
+    .c-terms .terms-card ul{margin:15px 0;padding-left:25px}
+    .c-terms .terms-card li{margin-bottom:10px;color:var(--text-light)}
+
+    .c-terms .update-date{text-align:center;font-style:italic;color:var(--text-light);margin-top:25px}
+
+    @media (max-width:768px){
+      .c-terms .section-title{font-size:1.8rem}
+      .c-terms .terms-card{padding:20px}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div id="header-container"></div>
+
+  <!-- Terms Section -->
+  <section class="c-terms">
+    <div class="c-terms-container">
+      <a href="javascript:history.back()" class="back-button"><i class="fas fa-arrow-left"></i> Go Back</a>
+
+      <h2 class="section-title">Terms of <span class="highlight">Service</span></h2>
+
+      <div class="terms-content">
+        <div class="terms-card">
+          <h2>Acceptance of Terms</h2>
+          <p>By accessing or using Hole People Guides, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree, please do not use this website.</p>
+
+          <h3>Use of the Site</h3>
+          <p>You may use the Site only for lawful purposes and in accordance with these Terms. You agree not to:</p>
+          <ul>
+            <li>Violate any applicable laws or regulations</li>
+            <li>Engage in unauthorized use of content, trademarks, or intellectual property</li>
+            <li>Attempt to gain unauthorized access to the Site or interfere with its operation</li>
+          </ul>
+
+          <h3>Intellectual Property</h3>
+          <p>All content, design, and materials on Hole People Guides are owned by their respective owners. This site is an unofficial fan resource and is not affiliated with the official game developers.</p>
+
+          <h3>Disclaimer</h3>
+          <p>This website is provided “as is” without warranties of any kind. We make no guarantees regarding the accuracy, reliability, or availability of the content provided.</p>
+
+          <h3>Limitation of Liability</h3>
+          <p>In no event shall Hole People Guides or its contributors be liable for any damages arising from the use or inability to use the Site or its content.</p>
+
+          <h3>Changes to Terms</h3>
+          <p>We may revise these Terms from time to time. Any changes will be effective immediately upon posting on this page. Your continued use of the Site after changes are posted constitutes your acceptance of those changes.</p>
+
+          <div class="update-date"><p>These terms were last updated on July 15, 2023.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div id="footer-container"></div>
+
+  <!-- External script to inject header/footer -->
+  <script src="scripts/main.js" defer></script>
+</body>
+</html>

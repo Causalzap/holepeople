@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hole People - Level Guides</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ===== 站点通用变量（与首页一致） ===== */
+    :root {
+      --primary: #6C63FF;
+      --primary-light: #8580FF;
+      --accent: #36D1DC;
+      --light-bg: #f8f9fe;
+      --card-bg: #ffffff;
+      --text-dark: #2d2b4e;
+      --text-light: #5a5779;
+      --border-light: #e4e6f0;
+      --gradient-primary: linear-gradient(135deg, var(--primary), var(--accent));
+      --shadow: 0 10px 30px rgba(108, 99, 255, 0.15);
+      --shadow-hover: 0 15px 35px rgba(108, 99, 255, 0.25);
+    }
+
+    #header-container {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    #levels-tools, #levels-ad, #levels-featured {
+    margin: 0;
+    padding: 0;
+    }
+
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body{
+      padding-top:72px;               /* 为空出固定头部的高度 */
+      background:var(--light-bg);
+      font-family:'Poppins',sans-serif;
+      color: var(--text-light);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* 通用容器（与首页一致的左右留白） */
+    .container{ width:90%; max-width:1200px; margin:0 auto; }
+
+    /* 宿主容器通用边距（header/footer 不加） */
+    #levels-hero,#levels-tools,#levels-grid,#levels-ad,#levels-featured{ padding:2rem 0; }
+
+    .section-title{
+      font-family:'Oxanium', cursive;
+      font-weight:700;
+      color:var(--text-dark);
+      font-size:2.2rem;
+      text-align:center;
+      margin:0 auto 2rem;
+      position:relative;
+    }
+    .section-title::after{
+      content:'';
+      position:absolute;
+      bottom:-10px; left:50%; transform:translateX(-50%);
+      width:80px; height:4px; border-radius:2px; background:var(--gradient-primary);
+    }
+
+    .inject-error{ padding:12px;border:1px dashed #f99;color:#b00;background:#fff }
+    
+    /* 添加关卡详情页样式 */
+    .level-detail {
+      padding: 2rem 0;
+      min-height: 60vh;
+    }
+    
+    .level-detail .container {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      margin-top: 1rem;
+    }
+    
+    .level-detail h1 {
+      font-family: 'Oxanium', cursive;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-size: 2.5rem;
+    }
+    
+    .level-detail p {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+    
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .back-button:hover {
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <!-- 头部（组件注入） -->
+  <div id="header-container"></div>
+
+  <!-- Level Guides 页面分区（由 main.js 注入具体组件） -->
+  <!-- 这个区域将被服务器替换为关卡详情内容 -->
+  <div id="levels-hero"></div>
+  <div id="levels-tools"></div>
+  <div id="levels-grid"></div>
+  <div id="levels-ad"></div>
+  <div id="levels-featured"></div>
+
+  <!-- 页脚（组件注入） -->
+  <div id="footer-container"></div>
+
+  <!-- 仅加载主脚本，不再写任何内联装配/渲染逻辑，避免二次注入 -->
+  <script src="/scripts/main.js"></script>
+</body>
+</html>

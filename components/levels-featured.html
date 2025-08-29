@@ -1,0 +1,275 @@
+<section class="c-lv-featured">
+    <div class="container">
+        <div class="showcase-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h2 class="showcase-title">Featured Level Guides</h2>
+        </div>
+
+        <div class="levels-grid">
+            <article class="level-card">
+                <img class="level-image" 
+                     alt="Hole People Level 152 walkthrough with bombs, locked hole, and key puzzle"
+                     src="assets/image/hole-people-level-152-puzzle-walkthrough-key-bomb-obstacles.jpeg" />
+                <div class="level-content">
+                    <h3 class="level-title">Level 152: Locked Bomb Challenge</h3>
+                    <p class="level-desc">
+                        Solve Hole People Level 152 with tricky bombs, locked holes, and hidden keys. 
+                        Use smart moves to clear boxes and guide the people safely to their goals.
+                    </p>
+                    <div class="level-meta">
+                        <div class="dots">
+                            <span class="dot on"></span>
+                            <span class="dot on"></span>
+                            <span class="dot"></span>
+                        </div>
+                        <a class="view-guide" href="level.html?n=152">View Guide</a>
+                    </div>
+                </div>
+            </article>
+            
+
+            <article class="level-card">
+                <img class="level-image" 
+                     alt="Hole People Level 168 walkthrough with balloons, multi-color holes, and group collection puzzle"
+                     src="assets/image/hole-people-level-168-walkthrough.png" />
+                <div class="level-content">
+                    <h3 class="level-title">Level 168: Balloon Split Puzzle</h3>
+                    <p class="level-desc">
+                        Solve Hole People Level 168 by managing balloon characters and guiding groups into the correct colored holes. 
+                        Collect all targets (28, 24, 12) to clear this tricky split-level stage.
+                    </p>
+                    <div class="level-meta">
+                        <div class="dots">
+                            <span class="dot on"></span>
+                            <span class="dot on"></span>
+                            <span class="dot on"></span>
+                        </div>
+                        <a class="view-guide" href="level.html?n=168">View Guide</a>
+                    </div>
+                </div>
+            </article>
+            
+
+            <article class="level-card">
+                <img class="level-image" 
+                     alt="Hole People Level 169 walkthrough with layered blocks, locked areas, and multi-color holes"
+                     src="assets/image/hole-people-level-169-walkthrough.png" />
+                <div class="level-content">
+                    <h3 class="level-title">Level 169: Multi-Hole Block Puzzle</h3>
+                    <p class="level-desc">
+                        Clear stacked rows and unlock blocked areas while guiding characters into the correct colored holes. 
+                        Meet all target goals (24, 20, 12, 32) to complete this layered strategy challenge.
+                    </p>
+                    <div class="level-meta">
+                        <div class="dots">
+                            <span class="dot on"></span>
+                            <span class="dot on"></span>
+                            <span class="dot"></span>
+                        </div>
+                        <a class="view-guide" href="level.html?n=169">View Guide</a>
+                    </div>
+                </div>
+            </article>
+            
+        </div>
+    </div>
+</section>
+
+<style>
+    .c-lv-featured {
+        padding: 60px 40px;
+        background-color: var(--card-bg);
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+    }
+    .showcase-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+    }
+    .showcase-title {
+        font-family: 'Oxanium', cursive;
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        position: relative;
+        display: inline-block;
+    }
+    .showcase-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: var(--gradient-primary);
+        border-radius: 2px;
+    }
+    /* 美化View All链接 */
+    .view-all {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 24px;
+        background: var(--gradient-primary);
+        color: white;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+    }
+    .view-all::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: 0.5s;
+    }
+    .view-all:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-hover);
+    }
+    .view-all:hover::before {
+        left: 100%;
+    }
+    .view-all i {
+        transition: transform 0.3s ease;
+    }
+    .view-all:hover i {
+        transform: translateX(4px);
+    }
+    .levels-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px;
+    }
+    .level-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: all 0.3s ease;
+    }
+    .level-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-hover);
+    }
+    .level-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    .level-content {
+        padding: 24px;
+    }
+    .level-title {
+        font-family: 'Oxanium', cursive;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 12px;
+    }
+    .level-desc {
+        color: var(--text-light);
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+    .level-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .difficulty {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .difficulty-label {
+        font-size: 0.85rem;
+        color: var(--text-light);
+    }
+    .dots {
+        display: flex;
+        gap: 6px;
+    }
+    .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--border-light);
+    }
+    .dot.on {
+        background: var(--primary);
+    }
+    .dot.on:nth-child(1) { background: #4CAF50; }
+    .dot.on:nth-child(2) { background: #FF9800; }
+    .dot.on:nth-child(3) { background: #F44336; }
+    .view-guide {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 20px;
+        background: var(--gradient-primary);
+        color: white;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+    .view-guide:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+    }
+    /* 响应式设计 */
+    @media screen and (max-width: 1024px) {
+        .levels-grid {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+    }
+    @media screen and (max-width: 768px) {
+        .showcase-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        
+        .showcase-title {
+            font-size: 1.8rem;
+        }
+        
+        .levels-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    @media screen and (max-width: 480px) {
+        body {
+            padding: 20px 10px;
+        }
+        
+        .c-lv-featured {
+            padding: 40px 20px;
+        }
+        
+        .view-all {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+        
+        .level-content {
+            padding: 20px;
+        }
+        
+        .level-title {
+            font-size: 1.2rem;
+        }
+    }
+</style>

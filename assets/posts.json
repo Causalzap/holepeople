@@ -1,0 +1,39 @@
+[
+    {
+      "title": "Rollic CEO Burak Vardal on the Shift from Hyper-Casual to Hybrid (Part 1)",
+      "url": "/blog/rollic-part1.html",
+      "cover": "/assets/blog/rollic-games-office-team.webp",
+      "alt": "Burak Vardal speaks with the team at Rollic HQ about moving from hyper-casual to hybrid – Part 1",
+      "date": "August 20, 2025",
+      "read": "6 min",
+      "category": "updates",
+      "excerpt": "How Turkey’s Rollic pivoted from hyper-casual to hybrid—and why the team’s ‘core gamer’ DNA and long-term design mindset made the transition stick.",
+      "dateISO": "2025-08-20",
+      "tags": ["Rollic", "Burak Vardal", "hyper-casual", "hybrid monetization", "Hole People"]
+    },
+    {
+      "title": "How Rollic Kills 1,000 Prototypes a Year to Find Hits (Part 2)",
+      "url": "/blog/rollic-part2.html",
+      "cover": "/assets/blog/rollic-games-office-team.webp",
+      "alt": "Rollic team reviews prototypes in the office playroom—rapid testing and cuts to find fun – Part 2",
+      "date": "August 23, 2025",
+      "read": "7 min",
+      "category": "tips",
+      "excerpt": "Inside Rollic’s ruthless prototype-and-test machine, Hair Challenge’s 3-level test, and why fresh mechanics and POV beat glossy clones in crowded genres.",
+      "dateISO": "2025-08-23",
+      "tags": ["rapid prototyping", "D1 retention", "game design", "mobile UA", "Hole People"]
+    },
+    {
+      "title": "7 Rules for Mobile Game Founders from Rollic’s CEO Burak Vardal (Part 3)",
+      "url": "/blog/rollic-part3.html",
+      "cover": "/assets/blog/rollic-games-office-team.webp",
+      "alt": "Burak Vardal shares actionable rules for mobile game founders—keep teams light, test hard, build around core fun – Part 3",
+      "date": "August 26, 2025",
+      "read": "6 min",
+      "category": "guides",
+      "excerpt": "Actionable advice for founders: play more, hire complements, keep teams light, test-and-cut fast, and build long-term loops around core fun.",
+      "dateISO": "2025-08-26",
+      "tags": ["founder advice", "team building", "live-ops", "product strategy", "Hole People"]
+    }
+  ]
+  
