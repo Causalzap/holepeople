@@ -60,7 +60,7 @@
 
     .inject-error{ padding:12px;border:1px dashed #f99;color:#b00;background:#fff }
 
-    /* ===== 详情页样式（从你的模板保留） ===== */
+    /* ===== 详情页最小保底样式（模板里仍有更完整样式） ===== */
     .level-detail { padding: 2rem 0; min-height: 60vh; }
     .level-detail .container {
       background: var(--card-bg);
@@ -76,10 +76,7 @@
       font-size: 2.5rem;
     }
     .level-detail p { color: var(--text-light); font-size: 1.1rem; line-height: 1.6; }
-    .back-button {
-      display: inline-flex; align-items: center; margin-bottom: 1.5rem;
-      color: var(--primary); text-decoration: none; font-weight: 500;
-    }
+    .back-button { display: inline-flex; align-items: center; margin-bottom: 1.5rem; color: var(--primary); text-decoration: none; font-weight: 500; }
     .back-button:hover { color: var(--accent); }
   </style>
 
@@ -116,11 +113,39 @@
         scripts.forEach(s => {
           const tag = document.createElement('script');
           if (s.src) tag.src = s.src; else tag.text = s.textContent || '';
-          // 复制常见属性（按需）
           ['type','async','defer','crossorigin','referrerpolicy'].forEach(a=>{
             if (s.hasAttribute(a)) tag.setAttribute(a, s.getAttribute(a));
           });
           document.body.appendChild(tag);
+        });
+      }
+
+      // —— 把模板里的 <style>/<link rel="stylesheet"> 挂到 <head>（并去重） —— //
+      function mountStylesFrom(htmlFragment) {
+        // 先清理旧的详情样式
+        document.querySelectorAll('style[data-level-style], link[data-level-style]').forEach(el => el.remove());
+
+        const tmp = document.createElement('div');
+        tmp.innerHTML = htmlFragment;
+
+        // 1) 内联 <style>
+        tmp.querySelectorAll('style').forEach(s => {
+          const tag = document.createElement('style');
+          tag.setAttribute('data-level-style','1');
+          tag.textContent = s.textContent || '';
+          document.head.appendChild(tag);
+        });
+
+        // 2) 外链 <link rel="stylesheet">
+        tmp.querySelectorAll('link[rel="stylesheet"]').forEach(l => {
+          const tag = document.createElement('link');
+          tag.setAttribute('rel','stylesheet');
+          tag.setAttribute('data-level-style','1');
+          // 复制常见属性
+          ['href','media','crossorigin','referrerpolicy','as','integrity'].forEach(a=>{
+            if (l.hasAttribute(a)) tag.setAttribute(a, l.getAttribute(a));
+          });
+          document.head.appendChild(tag);
         });
       }
 
@@ -155,6 +180,9 @@
           let html = await res.text();
           html = html.replaceAll('{{ slug }}', String(n));
 
+          // 先把模板样式安装到 <head>
+          mountStylesFrom(html);
+
           // 清理模板里可能重复的 header/footer 容器
           const tmp = document.createElement('div');
           tmp.innerHTML = html;
@@ -166,7 +194,7 @@
           root.innerHTML = '';
           root.appendChild(section);
 
-          // 执行模板脚本（VideoObject/prev-next 等逻辑）
+          // 执行模板脚本（VideoObject/prev-next/推荐等）
           runScriptsFrom(html);
 
           // 首次改写链接
@@ -211,7 +239,7 @@
     (function(){
       if (document.documentElement.dataset.detail === '0') {
         var s = document.createElement('script');
-        s.src = 'scripts/main.js?v=4';   // 相对路径 + 版本号，避免缓存
+        s.src = 'scripts/main.js?v=5';   // 相对路径 + 版本号，避免缓存
         document.body.appendChild(s);
       }
     })();
