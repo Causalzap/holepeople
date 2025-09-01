@@ -12,6 +12,8 @@ async function inject(id, url, { runScripts = true, onLoaded, silent = false } =
   const host = document.getElementById(id);
   if (!host) return console.warn(`[inject] missing host #${id}`);
   try {
+    console.log(`[inject] Fetching URL: ${url}`); // 添加日志
+
     const res = await fetch(`${url}${url.includes('?') ? '&' : '?'}v=${Date.now()}`, { cache: "no-cache" });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     const html = await res.text();
