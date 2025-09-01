@@ -87,7 +87,7 @@
           <section class="game-ad" aria-labelledby="play-title">
             <h2 id="play-title" class="game-title">Play Now</h2>
             <iframe 
-              src="/components/levels-ad.html" 
+              src="components/levels-ad.html" 
               loading="lazy"
               scrolling="no"
               sandbox="allow-scripts allow-same-origin allow-popups">
@@ -192,7 +192,7 @@
       if (!host || host.children.length > 0 || (host.textContent||'').trim()) return;
       fetch(url).then(r => r.text()).then(html => host.innerHTML = html).catch(()=>{});
     };
-    smartInject('header-container','/components/header.html');
+    smartInject('header-container','components/header.html');
   
     // 精确加载 videoId
     const yt = document.getElementById('lv-yt');
@@ -249,8 +249,8 @@
           yt.src = buildYtEmbed(id);
           // 注入 <link rel="prev/next">（利于SEO发现分页）
           const clamp = x => Math.min(639, Math.max(1, x));
-          const prevHref = `/level.html?n=${clamp(n-1)}`;
-          const nextHref = `/level.html?n=${clamp(n+1)}`;
+          const prevHref = `levels.html?n=${clamp(n-1)}`;
+          const nextHref = `levels.html?n=${clamp(n+1)}`;
           const linkPrev = Object.assign(document.createElement('link'), { rel:'prev', href: prevHref });
           const linkNext = Object.assign(document.createElement('link'), { rel:'next', href: nextHref });
           document.head.appendChild(linkPrev); document.head.appendChild(linkNext);
@@ -282,7 +282,7 @@
         <article class="recommended-card">
           <span class="level-number">Level ${n}</span>
           <span class="guide-type">Video Guide</span>
-          <a class="watch-btn" href="/level.html?n=${n}">
+          <a class="watch-btn" href="levels.html?n=${n}">
             <i class="fas fa-play-circle" aria-hidden="true"></i> Watch Now
           </a>
         </article>
