@@ -123,49 +123,50 @@ function getLevelFromURL() {
 }
 
 async function showLevelDetail(n) {
-  let host = document.getElementById(DETAIL_HOST_ID);
+  let host = document.getElementById("level-detail-container");
   if (!host) {
-    host = document.createElement('section');
-    host.id = DETAIL_HOST_ID;
-    host.style.minHeight = '40vh';
+    host = document.createElement("section");
+    host.id = "level-detail-container";
+    host.style.minHeight = "40vh";
     const anchor = document.getElementById("levels-hero") || document.getElementById("levels-tools");
     if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(host, anchor);
     else document.body.appendChild(host);
   }
 
-  toggleElements([], LIST_SECTION_IDS);
+  // 隐藏列表、设置标题与 canonical
+  toggleElements([], ["levels-hero","levels-tools","levels-grid","levels-ad","levels-featured"]);
   document.title = `Level ${n} - Hole People`;
   setCanonical(n);
 
+  // 只加载通用模板
+  let tpl = null;
   try {
-    await inject(DETAIL_HOST_ID, `components/level/${n}.html`, { silent: true });
-  } catch {
-    let tpl = null;
-    try {
-      const res = await fetch(`components/level/[slug].html?v=${Date.now()}`, { cache: 'no-cache' });
-      if (res.ok) tpl = await res.text();
-    } catch {}
-    const host2 = document.getElementById(DETAIL_HOST_ID);
-    if (!tpl) {
-      host2.innerHTML = `<div style="padding:12px;border:1px dashed #f99;color:#b00">Failed to load level template.</div>`;
-    } else {
-      host2.innerHTML = tpl
-        .replaceAll('{{LEVEL}}', String(n))
-        .replaceAll('{{ slug }}', String(n))
-        .replaceAll('{{slug}}', String(n));
+    const res = await fetch(`components/level/[slug].html?v=${Date.now()}`, { cache: "no-cache" });
+    if (res.ok) tpl = await res.text();
+  } catch {}
 
-      host2.querySelectorAll('script').forEach(s => {
-        const ns = document.createElement('script');
-        [...s.attributes].forEach(a => ns.setAttribute(a.name, a.value));
-        if (s.src) ns.src = s.src; else ns.textContent = s.textContent;
-        document.body.appendChild(ns);
-      });
-    }
+  if (!tpl) {
+    host.innerHTML = `<div style="padding:12px;border:1px dashed #f99;color:#b00">Failed to load level template.</div>`;
+  } else {
+    const html = tpl
+      .replaceAll("{{LEVEL}}", String(n))
+      .replaceAll("{{ slug }}", String(n))
+      .replaceAll("{{slug}}", String(n));
+    host.innerHTML = html;
+
+    // 执行模板内联脚本（如果有）
+    host.querySelectorAll("script").forEach(s => {
+      const ns = document.createElement("script");
+      [...s.attributes].forEach(a => ns.setAttribute(a.name, a.value));
+      if (s.src) ns.src = s.src; else ns.textContent = s.textContent;
+      document.body.appendChild(ns);
+    });
   }
 
-  host.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  setCanonical(n); // 结束兜底
+  host.scrollIntoView({ behavior: "smooth", block: "start" });
+  setCanonical(n); // 兜底一次
 }
+
 
 function showLevelList() {
   const detail = document.getElementById(DETAIL_HOST_ID);
