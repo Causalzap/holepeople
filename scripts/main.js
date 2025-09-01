@@ -1,7 +1,7 @@
 // scripts/main.js
 
 // ========== 基础工具：把一个 HTML 片段注入到指定容器 ==========
-async function inject(id, url, { runScripts = true, onLoaded } = {}) {
+async function inject(id, url, { runScripts = true, onLoaded, silent = false } = {}) {
   const host = document.getElementById(id);
   if (!host) return console.warn(`[inject] missing host #${id}`);
   try {
@@ -11,6 +11,7 @@ async function inject(id, url, { runScripts = true, onLoaded } = {}) {
     host.innerHTML = html;
 
     if (runScripts) {
+      // 运行注入片段里的 <script>
       const tmp = document.createElement('div');
       tmp.innerHTML = html;
       tmp.querySelectorAll('script').forEach(s => {
@@ -27,9 +28,11 @@ async function inject(id, url, { runScripts = true, onLoaded } = {}) {
     return html;
   } catch (e) {
     console.error(`[inject] FAIL -> ${id} <= ${url}`, e);
-    host.innerHTML = `<div style="padding:12px;border:1px dashed #f99;color:#b00">
-      Failed to load ${url}: ${e.message}
-    </div>`;
+    if (!silent) {
+      host.innerHTML = `<div style="padding:12px;border:1px dashed #f99;color:#b00">
+        Failed to load ${url}: ${e.message}
+      </div>`;
+    }
     throw e;
   }
 }
@@ -78,21 +81,35 @@ async function showLevelDetail(n) {
   toggleElements([], LIST_SECTION_IDS);
   document.title = `Level ${n} - Hole People`;
 
+  // 1) 先尝试加载专用文件（静默失败，不渲染报错 UI）
   try {
-    await inject(DETAIL_HOST_ID, `components/level/${n}.html`);
+    await inject(DETAIL_HOST_ID, `components/level/${n}.html`, { silent: true });
   } catch {
-    const html = await inject(DETAIL_HOST_ID, `components/level/[slug].html`, { runScripts: false });
+    // 2) 回退到通用模板：先取文本 -> 替换占位符 -> 一次性写入 DOM，再执行脚本
+    let tpl = null;
+    try {
+      const res = await fetch(`components/level/[slug].html?v=${Date.now()}`, { cache: 'no-cache' });
+      if (res.ok) tpl = await res.text();
+    } catch (_) {}
+
     const host2 = document.getElementById(DETAIL_HOST_ID);
-    host2.innerHTML = html
-      .replaceAll('{{LEVEL}}', String(n))
-      .replaceAll('{{ slug }}', String(n))
-      .replaceAll('{{slug}}', String(n));
-    host2.querySelectorAll('script').forEach(s => {
-      const nScript = document.createElement('script');
-      [...s.attributes].forEach(a => nScript.setAttribute(a.name, a.value));
-      nScript.textContent = s.textContent;
-      document.body.appendChild(nScript);
-    });
+    if (!tpl) {
+      host2.innerHTML = `<div style="padding:12px;border:1px dashed #f99;color:#b00">Failed to load level template.</div>`;
+    } else {
+      const html = tpl
+        .replaceAll('{{LEVEL}}', String(n))
+        .replaceAll('{{ slug }}', String(n))
+        .replaceAll('{{slug}}', String(n));
+      host2.innerHTML = html;
+
+      // 执行模板内联脚本（如果有）
+      host2.querySelectorAll('script').forEach(s => {
+        const ns = document.createElement('script');
+        [...s.attributes].forEach(a => ns.setAttribute(a.name, a.value));
+        if (s.src) ns.src = s.src; else ns.textContent = s.textContent;
+        document.body.appendChild(ns);
+      });
+    }
   }
 
   host.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -122,6 +139,7 @@ function bindLevelClickDelegation() {
     const a = e.target.closest('a, button, [data-level]');
     if (!a) return;
 
+    // [data-level] 直接取数值（SPA）
     if (a.hasAttribute('data-level')) {
       const n = parseInt(a.getAttribute('data-level'), 10);
       if (n >= 1 && n <= LEVEL_MAX) {
@@ -132,6 +150,7 @@ function bindLevelClickDelegation() {
       return;
     }
 
+    // 带 ?n= 的链接：在 levels.html 内部改为 SPA
     if (a.tagName.toLowerCase() === 'a' && a.href) {
       try {
         const url = new URL(a.href);
@@ -146,6 +165,7 @@ function bindLevelClickDelegation() {
     }
   });
 
+  // 前进/后退
   window.addEventListener('popstate', renderLevelsPageByURL);
 }
 
@@ -153,6 +173,7 @@ function bindLevelClickDelegation() {
 function initLevelsTools() {
   const MAX = LEVEL_MAX;
 
+  // 大搜索框：按关卡号直达
   const inputMain = document.getElementById('lv-input-main');
   const btnSearch = document.getElementById('lv-search-btn');
 
@@ -173,6 +194,7 @@ function initLevelsTools() {
     inputMain.addEventListener('keydown', e => { if (e.key === 'Enter') goLevel(); });
   }
 
+  // Jump to range
   const select = document.getElementById('lv-range');
   const btnRange = document.getElementById('lv-range-go');
 
@@ -204,13 +226,12 @@ async function loadComponents() {
   await inject("header-container", "components/header.html");
   highlightActiveNav();
 
-  // —— 是否在 levels.html ——（用 URL 判断更稳）
+  // 是否在 levels.html（用 URL 判断）
   const pageFile = location.pathname.split('/').pop();
   const onLevelsPage = (pageFile === 'levels.html');
 
-  // 先根据 URL 初次渲染（处理用户直接访问 levels.html?n=48 的场景）
+  // 先按 URL 渲染一次（处理直达 levels.html?n=xx）
   if (onLevelsPage) {
-    // 先渲一次，防止后面组件脚本短暂把列表显示出来
     renderLevelsPageByURL();
   }
 
@@ -233,7 +254,7 @@ async function loadComponents() {
     await inject("levels-ad", "components/levels-ad.html");
     await inject("levels-featured", "components/levels-featured.html");
 
-    // 绑定事件并在组件注入完后再渲一次，确保最终状态是“详情或列表”与 URL 匹配
+    // 组件注入完后再渲一次，确保状态与 URL 匹配
     bindLevelClickDelegation();
     await renderLevelsPageByURL();
   }
