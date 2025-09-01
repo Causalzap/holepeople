@@ -91,7 +91,7 @@ function initLevelsTools() {
                 return; 
             }
             // 跳到关卡详情页（沿用你的路由）
-            location.href = `level.html?n=${n}`;
+            location.href = `levels.html?n=${n}`;
         };
         btnSearch.addEventListener('click', goLevel);
         inputMain.addEventListener('keydown', e => { 
