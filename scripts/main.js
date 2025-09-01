@@ -92,7 +92,10 @@ async function showLevelDetail(n) {
     const html = await inject(DETAIL_HOST_ID, `components/level/[slug].html`, { runScripts: false });
     // 用 LEVEL 占位符做最基础替换（可按需扩展）
     const host2 = document.getElementById(DETAIL_HOST_ID);
-    host2.innerHTML = html.replaceAll('{{LEVEL}}', String(n));
+    host2.innerHTML = html
+  .replaceAll('{{LEVEL}}', String(n))
+  .replaceAll('{{ slug }}', String(n))
+  .replaceAll('{{slug}}', String(n));
     // 重新执行内联脚本（如果有）
     host2.querySelectorAll('script').forEach(s => {
       const nScript = document.createElement('script');
