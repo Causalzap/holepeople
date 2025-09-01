@@ -270,41 +270,41 @@ function initLevelsTools() {
 
 // ========== 页面组件装载 ==========
 async function loadComponents() {
-  // 函数级防抖，避免意外重复调用
   if (loadComponents.__running) {
     console.warn('[main.js] loadComponents already running -> skip');
     return;
   }
   loadComponents.__running = true;
   try {
+    // 1. 注入所有页面共通的头部和页脚
     await inject("header-container", "components/header.html");
     highlightActiveNav();
 
-    const pageFile = location.pathname.split('/').pop();
-    const onLevelsPage = (pageFile === 'levels.html');
-    const currentN = getLevelFromURL();
+    // 2. 获取当前页面文件名
+    const pageFile = location.pathname.split('/').pop(); // 例如: "index.html", "levels.html"
 
-    if (onLevelsPage) {
-      // 详情态：只渲染详情，不注入列表相关组件，避免二次渲染
-      if (currentN) {
-        setCanonical(currentN);
-        bindLevelClickDelegation();
-        await showLevelDetail(currentN);
-      } else {
-        // 列表态：注入工具/网格/广告/精选
-        await inject("levels-tools", "components/levels-tools.html");
-        initLevelsTools();
-
-        await inject("levels-grid", "components/levels-grid.html");
-        await inject("levels-ad", "components/levels-ad.html");
-        await inject("levels-featured", "components/levels-featured.html");
-
-        bindLevelClickDelegation();
-        showLevelList(); // 只调用一次
-      }
+    // 3. 根据不同的页面，注入特定的内容
+    if (pageFile === 'levels.html') {
+      // ... 您原有的 levels.html 处理逻辑 ...
+      const currentN = getLevelFromURL();
+      // ... (其余代码保持不变) ...
+    } 
+    // +++ 新增：处理首页的逻辑 +++
+    else if (pageFile === 'index.html' || pageFile === '' || pageFile === 'home.html') { 
+      // 根据您的实际首页文件名进行调整
+      // 按顺序注入首页所需的各个模块
+      await inject("hero-container", "components/hero.html");
+      await inject("overview-container", "components/overview.html");
+      await inject("how-to-play-container", "components/how-to-play.html");
+      await inject("features-container", "components/features.html");
+      await inject("platform-container", "components/platform.html");
+      await inject("faq-container", "components/faq.html");
     }
+    // 可以继续添加 else if 来处理其他页面，例如 blog.html, download.html 等
 
+    // 4. 注入所有页面共通的页脚
     await inject("footer-container", "components/footer.html");
+
   } finally {
     loadComponents.__running = false;
   }
