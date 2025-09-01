@@ -1,5 +1,14 @@
 // scripts/main.js
 
+// ======= singleton guard: 防止 main.js 被重复执行 =======
+(function () {
+  if (window.__HP_MAIN_SINGLETON__) {
+    console.warn('[main.js] duplicate load detected -> skip init');
+    return;
+  }
+  window.__HP_MAIN_SINGLETON__ = true;
+})();
+
 // ========== 基础工具：把一个 HTML 片段注入到指定容器 ==========
 async function inject(id, url, { runScripts = true, onLoaded, silent = false } = {}) {
   const host = document.getElementById(id);
@@ -257,34 +266,45 @@ function initLevelsTools() {
 
 // ========== 页面组件装载 ==========
 async function loadComponents() {
-  await inject("header-container", "components/header.html");
-  highlightActiveNav();
-
-  const pageFile = location.pathname.split('/').pop();
-  const onLevelsPage = (pageFile === 'levels.html');
-  const currentN = getLevelFromURL();
-
-  if (onLevelsPage) {
-    // 详情态：只渲染详情，不注入列表相关组件，避免二次渲染
-    if (currentN) {
-      setCanonical(currentN);
-      bindLevelClickDelegation();
-      await showLevelDetail(currentN);
-    } else {
-      // 列表态：注入工具/网格/广告/精选
-      await inject("levels-tools", "components/levels-tools.html");
-      initLevelsTools();
-
-      await inject("levels-grid", "components/levels-grid.html");
-      await inject("levels-ad", "components/levels-ad.html");
-      await inject("levels-featured", "components/levels-featured.html");
-
-      bindLevelClickDelegation();
-      showLevelList(); // 只调用一次
-    }
+  // 函数级防抖，避免意外重复调用
+  if (loadComponents.__running) {
+    console.warn('[main.js] loadComponents already running -> skip');
+    return;
   }
+  loadComponents.__running = true;
+  try {
+    await inject("header-container", "components/header.html");
+    highlightActiveNav();
 
-  await inject("footer-container", "components/footer.html");
+    const pageFile = location.pathname.split('/').pop();
+    const onLevelsPage = (pageFile === 'levels.html');
+    const currentN = getLevelFromURL();
+
+    if (onLevelsPage) {
+      // 详情态：只渲染详情，不注入列表相关组件，避免二次渲染
+      if (currentN) {
+        setCanonical(currentN);
+        bindLevelClickDelegation();
+        await showLevelDetail(currentN);
+      } else {
+        // 列表态：注入工具/网格/广告/精选
+        await inject("levels-tools", "components/levels-tools.html");
+        initLevelsTools();
+
+        await inject("levels-grid", "components/levels-grid.html");
+        await inject("levels-ad", "components/levels-ad.html");
+        await inject("levels-featured", "components/levels-featured.html");
+
+        bindLevelClickDelegation();
+        showLevelList(); // 只调用一次
+      }
+    }
+
+    await inject("footer-container", "components/footer.html");
+  } finally {
+    loadComponents.__running = false;
+  }
 }
 
-document.addEventListener("DOMContentLoaded", loadComponents);
+// 只绑定一次，防止重复初始化
+document.addEventListener("DOMContentLoaded", loadComponents, { once: true });
