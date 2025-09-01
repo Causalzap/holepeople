@@ -8,340 +8,121 @@
   <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 
   <style>
+    /* ===== 站点通用变量（与首页一致） ===== */
     :root {
-      --primary:#6C63FF; --primary-light:#8580FF; --accent:#36D1DC;
-      --light-bg:#f8f9fe; --card-bg:#fff; --text-dark:#2d2b4e; --text-light:#5a5779;
-      --border-light:#e4e6f0; --gradient-primary:linear-gradient(135deg,var(--primary),var(--accent));
-      --shadow:0 10px 30px rgba(108,99,255,.15); --shadow-hover:0 15px 35px rgba(108,99,255,.25);
+      --primary: #6C63FF;
+      --primary-light: #8580FF;
+      --accent: #36D1DC;
+      --light-bg: #f8f9fe;
+      --card-bg: #ffffff;
+      --text-dark: #2d2b4e;
+      --text-light: #5a5779;
+      --border-light: #e4e6f0;
+      --gradient-primary: linear-gradient(135deg, var(--primary), var(--accent));
+      --shadow: 0 10px 30px rgba(108, 99, 255, 0.15);
+      --shadow-hover: 0 15px 35px rgba(108, 99, 255, 0.25);
     }
-    #header-container { padding:0!important; margin:0!important; }
-    #levels-tools, #levels-ad, #levels-featured { margin:0; padding:0; }
-    *{ box-sizing:border-box; margin:0; padding:0; }
+
+    #header-container {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    #levels-tools, #levels-ad, #levels-featured {
+    margin: 0;
+    padding: 0;
+    }
+
+    * { box-sizing: border-box; margin:0; padding:0; }
     body{
-      padding-top:72px;
+      padding-top:72px;               /* 为空出固定头部的高度 */
       background:var(--light-bg);
       font-family:'Poppins',sans-serif;
-      color:var(--text-light);
-      line-height:1.6;
-      overflow-x:hidden;
+      color: var(--text-light);
+      line-height: 1.6;
+      overflow-x: hidden;
     }
+
+    /* 通用容器（与首页一致的左右留白） */
     .container{ width:90%; max-width:1200px; margin:0 auto; }
+
+    /* 宿主容器通用边距（header/footer 不加） */
     #levels-hero,#levels-tools,#levels-grid,#levels-ad,#levels-featured{ padding:2rem 0; }
+
     .section-title{
-      font-family:'Oxanium',cursive; font-weight:700; color:var(--text-dark);
-      font-size:2.2rem; text-align:center; margin:0 auto 2rem; position:relative;
+      font-family:'Oxanium', cursive;
+      font-weight:700;
+      color:var(--text-dark);
+      font-size:2.2rem;
+      text-align:center;
+      margin:0 auto 2rem;
+      position:relative;
     }
     .section-title::after{
-      content:''; position:absolute; bottom:-10px; left:50%; transform:translateX(-50%);
+      content:'';
+      position:absolute;
+      bottom:-10px; left:50%; transform:translateX(-50%);
       width:80px; height:4px; border-radius:2px; background:var(--gradient-primary);
     }
-    .inject-error{ padding:12px; border:1px dashed #f99; color:#b00; background:#fff }
 
-    /* 详情样式 */
-    .level-detail { padding:2rem 0; min-height:60vh; }
-    .level-detail .container{
-      background:var(--card-bg); border-radius:12px; padding:2rem; box-shadow:var(--shadow);
-      margin-top:1rem; position:relative; overflow:hidden;
+    .inject-error{ padding:12px;border:1px dashed #f99;color:#b00;background:#fff }
+    
+    /* 添加关卡详情页样式 */
+    .level-detail {
+      padding: 2rem 0;
+      min-height: 60vh;
     }
-    .level-detail .container::before{
-      content:''; position:absolute; top:0; left:0; right:0; height:4px; background:var(--gradient-primary);
+    
+    .level-detail .container {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      margin-top: 1rem;
     }
-    .page-shell{ width:92%; max-width:1280px; margin:0 auto; }
-    .level-detail h1{
-      font-family:'Oxanium',cursive; margin-bottom:1rem; font-size:2.2rem;
-      background:var(--gradient-primary); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    
+    .level-detail h1 {
+      font-family: 'Oxanium', cursive;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-size: 2.5rem;
     }
-    .level-detail p{ color:var(--text-light); font-size:1.06rem; }
-    .back-button{
-      display:inline-flex; align-items:center; margin-bottom:1.2rem; color:var(--primary);
-      text-decoration:none; font-weight:600; transition:.3s; padding:.5rem 1rem; border-radius:6px; background:rgba(108,99,255,.1)
+    
+    .level-detail p {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      line-height: 1.6;
     }
-    .back-button:hover{ color:var(--accent); background:rgba(108,99,255,.18); transform:translateX(-4px) }
-    .level-info{ display:grid; grid-template-columns:1.35fr 1fr; gap:1.25rem; align-items:stretch }
-    @media(max-width:1024px){ .level-info{ grid-template-columns:1fr } }
-    .video-guide,.text-guide{ background:var(--light-bg); border-radius:12px; padding:1.5rem; box-shadow:var(--shadow); display:flex; flex-direction:column; height:100% }
-    .video-guide h2,.text-guide h2{ font-family:'Oxanium',cursive; color:var(--text-dark); margin-bottom:1rem; font-size:1.2rem }
-    .text-guide h3, .text-guide strong{ color:var(--primary) }
-    #lv-yt{ width:100%; aspect-ratio:16/9; border:0; border-radius:12px; background:#eee; margin-bottom:1rem }
-    .level-jump{ display:flex; align-items:center; gap:.75rem; margin:.3rem 0 1.2rem; flex-wrap:wrap }
-    .jump-box{ display:flex; align-items:center; gap:.5rem; background:#fff; border:1px solid var(--border-light); box-shadow:var(--shadow); border-radius:999px; padding:.35rem .4rem }
-    #lv-input{ width:120px; border:0; outline:none; padding:.55rem .75rem; border-radius:999px; background:transparent; font-weight:700; color:var(--text-dark) }
-    #lv-go{ display:inline-flex; align-items:center; justify-content:center; padding:.75rem 1.25rem; background:var(--primary); color:#fff; border-radius:10px; font-weight:700; border:0; cursor:pointer; transition:.3s }
-    #lv-go:hover{ background:var(--primary-light); transform:translateY(-2px) }
-    .video-navigation{ display:flex; justify-content:space-between; margin-top:1rem }
-    .prev-button,.next-button{ display:inline-flex; align-items:center; padding:.75rem 1.25rem; background:var(--primary); color:#fff; border-radius:10px; font-weight:700; transition:.3s }
-    .prev-button{ background:#5a5779 } .prev-button:hover{ background:#2d2b4e }
-    .next-button:hover{ background:var(--primary-light); transform:translateY(-2px) }
-    .recommended-levels{ background:var(--light-bg); border-radius:12px; padding:1.25rem; box-shadow:var(--shadow); margin-top:1rem }
-    .recommended-levels h2{ font-family:'Oxanium',cursive; color:var(--text-dark); margin-bottom:.75rem; font-size:1.1rem; text-align:center; position:relative; padding-bottom:.35rem }
-    .recommended-levels h2::after{ content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:60px; height:3px; background:var(--gradient-primary); border-radius:2px }
-    .recommended-cards{ display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:repeat(2,1fr); gap:.85rem }
-    .recommended-card{ background:#fff; border-radius:12px; padding:.75rem; box-shadow:var(--shadow); border:1px solid var(--border-light); text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:space-between }
-    .recommended-card .level-number{ font-family:'Oxanium',cursive; font-weight:800; font-size:1.1rem; color:var(--primary); margin-bottom:.25rem }
-    .watch-btn{ display:inline-flex; align-items:center; justify-content:center; padding:.5rem 1rem; background:var(--primary); color:#fff; border-radius:30px; font-weight:700; transition:.3s; width:100%; max-width:140px }
-    .watch-btn:hover{ background:var(--primary-light); transform:translateY(-2px) }
-    .game-ad{ background:linear-gradient(135deg,var(--primary),var(--accent)); border-radius:12px; padding:2rem; box-shadow:var(--shadow); text-align:center; margin-top:2rem; color:#fff }
-    .game-title{ font-family:'Oxanium',cursive; font-size:2rem; font-weight:700; margin-bottom:.5rem }
-    .game-ad iframe{ display:block; width:100%; height:800px; border:0; border-radius:12px; box-shadow:var(--shadow-hover) }
-    @media(max-width:768px){ .game-ad iframe{ height:420px } }
-    #footer-container{ margin:0!important; padding:0!important }
-    #footer-container *:last-child{ margin-bottom:0!important }
+    
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .back-button:hover {
+      color: var(--accent);
+    }
   </style>
 </head>
 <body>
-  <!-- Header（由 main.js 注入） -->
+  <!-- 头部（组件注入） -->
   <div id="header-container"></div>
 
-  <!-- 首页容器（有 n 参数时会被移除并渲染详情） -->
+  <!-- Level Guides 页面分区（由 main.js 注入具体组件） -->
+  <!-- 这个区域将被服务器替换为关卡详情内容 -->
   <div id="levels-hero"></div>
   <div id="levels-tools"></div>
   <div id="levels-grid"></div>
   <div id="levels-ad"></div>
   <div id="levels-featured"></div>
 
-  <!-- Footer（由 main.js 注入） -->
+  <!-- 页脚（组件注入） -->
   <div id="footer-container"></div>
 
-  <!-- 详情/首页切换脚本（main.js 之前运行） -->
-  <script>
-  (function () {
-    // 解析 ?n=
-    const qs = new URLSearchParams(location.search);
-    const raw = qs.get('n');
-    const num = Number(raw);
-    const clamp = (n) => Math.min(639, Math.max(1, n)); // 按需调整最大关卡
-    const slug = Number.isFinite(num) ? clamp(num) : null;
-
-    // 没有 n → 首页逻辑交给 main.js
-    if (!slug) return;
-
-    // 有 n → 移除首页容器，准备渲染详情
-    ['levels-hero','levels-tools','levels-grid','levels-ad','levels-featured'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.remove();
-    });
-
-    // 添加挂载点
-    const mount = document.createElement('div');
-    mount.id = 'level-detail-mount';
-    const footer = document.getElementById('footer-container');
-    (footer?.parentNode || document.body).insertBefore(mount, footer || null);
-
-    // 构造相对链接（兼容项目页）
-    const selfHref = (n) => `${location.pathname}?n=${n}`;
-    const listHref = () => (location.pathname.replace(/[^/]+$/, '') + 'levels.html');
-
-    // 先设置 SEO 基础信号（标题、描述、canonical）
-    (function setHeadSignals(){
-      document.title = `Level ${slug} Walkthrough · Hole People`;
-      const descText = `Complete video walkthrough and step-by-step strategy for Hole People Level ${slug}. Clear the stage fast with proven tips.`;
-
-      let md = document.querySelector('meta[name="description"]');
-      if (!md) { md = document.createElement('meta'); md.setAttribute('name','description'); document.head.appendChild(md); }
-      md.setAttribute('content', descText);
-
-      // 如果你有固定主域名，建议改为绝对地址：const canonURL = `https://www.holepeoplelevel.com/level.html?n=${slug}`;
-      const canonURL = new URL(location.href); canonURL.search = `?n=${slug}`;
-      let link = document.querySelector('link[rel="canonical"]');
-      if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-      link.href = canonURL.href;
-
-      // 预连 YouTube
-      const pre = document.createElement('link');
-      pre.rel = 'preconnect'; pre.href = 'https://www.youtube-nocookie.com';
-      document.head.appendChild(pre);
-    })();
-
-    // 注入详情 DOM
-    mount.innerHTML = `
-      <section class="level-detail" role="region" aria-label="Level detail page">
-        <main id="main-content" role="main" class="page-shell">
-          <div class="container">
-            <nav aria-label="Breadcrumb">
-              <a href="${listHref()}" class="back-button" itemprop="item">
-                <i class="fas fa-arrow-left" aria-hidden="true"></i>
-                <span style="margin-left:8px;">Back to Level List</span>
-              </a>
-            </nav>
-
-            <header class="level-header">
-              <h1>Level ${slug} · Hole People</h1>
-              <p>Complete video walkthrough and step-by-step strategy for Level ${slug}.</p>
-
-              <div class="level-jump" role="search" aria-label="Go to specific level">
-                <label for="lv-input">Go to level</label>
-                <div class="jump-box">
-                  <input id="lv-input" type="number" min="1" max="639" placeholder="1-639" inputmode="numeric" />
-                  <button id="lv-go" class="go-btn">
-                    <i class="fas fa-location-arrow" aria-hidden="true"></i>
-                    Go
-                  </button>
-                </div>
-              </div>
-            </header>
-
-            <div class="level-content">
-              <div class="level-info">
-                <article class="video-guide" aria-labelledby="video-title">
-                  <h2 id="video-title">Level ${slug} Walkthrough Video</h2>
-                  <iframe
-                    id="lv-yt"
-                    title="Hole People Level ${slug} Walkthrough"
-                    loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
-                  ></iframe>
-
-                  <nav class="video-navigation" aria-label="Level navigation">
-                    <a id="btn-prev" class="prev-button" rel="prev"><i class="fas fa-arrow-left" aria-hidden="true"></i>&nbsp;Previous Level</a>
-                    <a id="btn-next" class="next-button" rel="next">Next Level&nbsp;<i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-                  </nav>
-
-                  <section class="recommended-levels below-video" aria-labelledby="rec-title">
-                    <h2 id="rec-title">Recommended Levels</h2>
-                    <div id="rec-cards" class="recommended-cards"></div>
-                  </section>
-                </article>
-
-                <aside class="text-guide" aria-labelledby="guide-title">
-                  <h2 id="guide-title">Step-by-Step Walkthrough</h2>
-                  <p><strong>Stuck on a Hole People level?</strong> Don't worry. Our Level Walkthroughs give you thousands of up-to-date solutions so you can clear every stage with confidence. Each walkthrough pairs a <em>video guide</em> that shows the exact solution with a concise, <em>step-by-step</em> write-up you can follow move by move.</p>
-
-                  <h3>What's Included in Each Walkthrough</h3>
-                  <ul>
-                    <li><strong>Video Guide:</strong> Watch a real gameplay solution and see exactly how the level is solved.</li>
-                    <li><strong>Step-by-Step Instructions:</strong> Follow clear written steps to reproduce the moves effortlessly.</li>
-                    <li><strong>Smart Strategies:</strong> Learn proven tricks to unblock paths and finish faster.</li>
-                    <li><strong>Beat Any Level:</strong> Find reliable solutions for even the toughest stages.</li>
-                  </ul>
-
-                  <h3>How to Use These Guides</h3>
-                  <ul>
-                    <li><strong>Find Your Level:</strong> Use search or the list to locate the exact stage you’re stuck on.</li>
-                    <li><strong>Watch the Video:</strong> Play the walkthrough to see a visual, step-by-step solution.</li>
-                    <li><strong>Follow the Steps:</strong> Read the text guide while you apply the same strategy in game.</li>
-                    <li><strong>Pause & Replay:</strong> Missed a move? Pause or rewind until everything clicks.</li>
-                    <li><strong>Apply & Win:</strong> Use the insights to clear the level and keep progressing!</li>
-                  </ul>
-
-                  <p><strong>Still stuck?</strong> Our walkthroughs include video, step-by-step moves, and pro tips to get you unstuck fast.</p>
-                </aside>
-              </div>
-
-              <section class="game-ad" aria-labelledby="play-title">
-                <h2 id="play-title" class="game-title">Play Now</h2>
-                <iframe 
-                  src="components/levels-ad.html" 
-                  loading="lazy"
-                  scrolling="no"
-                  sandbox="allow-scripts allow-same-origin allow-popups">
-                </iframe>
-              </section>
-            </div>
-          </div>
-        </main>
-      </section>
-    `;
-
-    // 初始化：视频映射、结构化数据、上一/下一关、推荐
-    const yt = document.getElementById('lv-yt');
-    const MAP_URL = 'data/level-videos.json'; // 确保该文件路径正确
-
-    const buildYtEmbed = (id) => `https://www.youtube-nocookie.com/embed/${id}?autoplay=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
-    const fallbackSearch = (n) => `https://www.youtube.com/embed?autoplay=0&listType=search&list=${encodeURIComponent('Hole People Level '+n+' walkthrough')}`;
-
-    function injectStructuredData(videoId){
-      // VideoObject
-      const sd = {
-        "@context":"https://schema.org","@type":"VideoObject",
-        "name":`Hole People Level ${slug} Walkthrough`,
-        "description":`Complete walkthrough video and step-by-step strategy for Hole People Level ${slug}.`,
-        "thumbnailUrl":[`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`],
-        "embedUrl":`https://www.youtube-nocookie.com/embed/${videoId}`,
-        "url":location.href
-      };
-      const tag = document.createElement('script');
-      tag.type = 'application/ld+json';
-      tag.text = JSON.stringify(sd);
-      document.head.appendChild(tag);
-
-      // BreadcrumbList
-      const basePath = location.origin + location.pathname.replace(/[^/]+$/, '');
-      const crumbs = {
-        "@context":"https://schema.org","@type":"BreadcrumbList",
-        "itemListElement":[
-          {"@type":"ListItem","position":1,"name":"Home","item":`${location.origin}/`},
-          {"@type":"ListItem","position":2,"name":"Level Guides","item":`${basePath}levels.html`},
-          {"@type":"ListItem","position":3,"name":`Level ${slug}`}
-        ]
-      };
-      const bc = document.createElement('script');
-      bc.type = 'application/ld+json';
-      bc.text = JSON.stringify(crumbs);
-      document.head.appendChild(bc);
-    }
-
-    async function applyVideo(n){
-      if(!yt) return;
-      try{
-        const res = await fetch(MAP_URL, { cache: 'no-store' });
-        const map = await res.json();
-        const id = map[String(n)] || map[n];
-
-        if (id) {
-          yt.src = buildYtEmbed(id);
-
-          // <link rel="prev/next"> 便于搜索引擎发现分页
-          const prevHref = selfHref(clamp(n-1));
-          const nextHref = selfHref(clamp(n+1));
-          document.head.appendChild(Object.assign(document.createElement('link'), { rel:'prev', href: prevHref }));
-          document.head.appendChild(Object.assign(document.createElement('link'), { rel:'next', href: nextHref }));
-
-          injectStructuredData(id);
-        } else {
-          yt.src = fallbackSearch(n);
-        }
-      } catch {
-        yt.src = fallbackSearch(n);
-      }
-    }
-    applyVideo(slug);
-
-    // 上/下一关
-    const prev = document.getElementById('btn-prev');
-    const next = document.getElementById('btn-next');
-    if(prev) prev.href = selfHref(clamp(slug - 1));
-    if(next) next.href = selfHref(clamp(slug + 1));
-
-    // 推荐关卡
-    const recHost = document.getElementById('rec-cards');
-    if (recHost) {
-      const candidates = [-4,-3,-2,-1,1,2,3,4].map(d => clamp(slug + d));
-      const picks = [...new Set(candidates.filter(n => n !== slug))].slice(0, 8);
-      recHost.innerHTML = picks.map(n => `
-        <article class="recommended-card">
-          <span class="level-number">Level ${n}</span>
-          <span class="guide-type">Video Guide</span>
-          <a class="watch-btn" href="${selfHref(n)}">
-            <i class="fas fa-play-circle" aria-hidden="true"></i> Watch Now
-          </a>
-        </article>
-      `).join('');
-    }
-
-    // Go to level
-    const input = document.getElementById('lv-input');
-    const goBtn = document.getElementById('lv-go');
-    const go = () => {
-      const v = clamp(parseInt(input.value, 10));
-      if (!isNaN(v)) location.href = selfHref(v);
-    };
-    if (goBtn) goBtn.addEventListener('click', go);
-    if (input) input.addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
-  })();
-  </script>
-
-  <!-- 仅当没有 n= 参数时，首页逻辑才会用到 main.js -->
-  <script src="scripts/main.js"></script>
+  <!-- 仅加载主脚本，不再写任何内联装配/渲染逻辑，避免二次注入 -->
+  <script src="/scripts/main.js"></script>
 </body>
 </html>
