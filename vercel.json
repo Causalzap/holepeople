@@ -1,4 +1,29 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "."
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "buildCommand": "npm run build",
+        "distDir": "."
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/level.html",
+      "dest": "/level.html",
+      "headers": {
+        "Cache-Control": "no-cache, no-store, must-revalidate"
+      }
+    },
+    {
+      "src": "/level\\.html\\?n=(.*)",
+      "dest": "/level.html?n=$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
 }
