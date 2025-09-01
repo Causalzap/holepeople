@@ -1,38 +1,12 @@
 {
   "version": 2,
-  "builds": [
+  "cleanUrls": true,
+  "headers": [
     {
-      "src": "**/*.html",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/levels.html",
-      "dest": "/levels.html",
-      "headers": {
-        "Cache-Control": "no-cache, no-store, must-revalidate"
-      }
-    },
-    {
-      "src": "/levels\\.html\\?n=(\\d+)",
-      "dest": "/levels.html?n=$1"
-    },
-    {
-      "src": "/blog.html",
-      "dest": "/blog.html"
-    },
-    {
-      "src": "/contact.html",
-      "dest": "/contact.html"
-    },
-    {
-      "src": "/download.html",
-      "dest": "/download.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/levels.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
     }
   ]
 }
