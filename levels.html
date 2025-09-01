@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-detail="0">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -23,18 +23,12 @@
       --shadow-hover: 0 15px 35px rgba(108, 99, 255, 0.25);
     }
 
-    #header-container {
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-    #levels-tools, #levels-ad, #levels-featured {
-    margin: 0;
-    padding: 0;
-    }
+    #header-container { padding: 0 !important; margin: 0 !important; }
+    #levels-tools, #levels-ad, #levels-featured { margin: 0; padding: 0; }
 
     * { box-sizing: border-box; margin:0; padding:0; }
     body{
-      padding-top:72px;               /* 为空出固定头部的高度 */
+      padding-top:72px;
       background:var(--light-bg);
       font-family:'Poppins',sans-serif;
       color: var(--text-light);
@@ -65,13 +59,9 @@
     }
 
     .inject-error{ padding:12px;border:1px dashed #f99;color:#b00;background:#fff }
-    
-    /* 添加关卡详情页样式 */
-    .level-detail {
-      padding: 2rem 0;
-      min-height: 60vh;
-    }
-    
+
+    /* ===== 详情页样式（从你的模板保留） ===== */
+    .level-detail { padding: 2rem 0; min-height: 60vh; }
     .level-detail .container {
       background: var(--card-bg);
       border-radius: 12px;
@@ -79,50 +69,152 @@
       box-shadow: var(--shadow);
       margin-top: 1rem;
     }
-    
     .level-detail h1 {
       font-family: 'Oxanium', cursive;
       color: var(--primary);
       margin-bottom: 1rem;
       font-size: 2.5rem;
     }
-    
-    .level-detail p {
-      color: var(--text-light);
-      font-size: 1.1rem;
-      line-height: 1.6;
-    }
-    
+    .level-detail p { color: var(--text-light); font-size: 1.1rem; line-height: 1.6; }
     .back-button {
-      display: inline-flex;
-      align-items: center;
-      margin-bottom: 1.5rem;
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 500;
+      display: inline-flex; align-items: center; margin-bottom: 1.5rem;
+      color: var(--primary); text-decoration: none; font-weight: 500;
     }
-    
-    .back-button:hover {
-      color: var(--accent);
-    }
+    .back-button:hover { color: var(--accent); }
   </style>
+
+  <script>
+    // =============== 详情/列表模式判定 ===============
+    (function () {
+      const params = new URLSearchParams(location.search);
+      const n = parseInt(params.get('n'), 10);
+      const inDetail = Number.isInteger(n) && n >= 1 && n <= 570; // 调整范围请改这里
+
+      document.documentElement.dataset.detail = inDetail ? '1' : '0';
+      if (!inDetail) return;            // 列表模式直接交给 main.js
+
+      // 详情页标题
+      document.title = `Level ${n} · Hole People`;
+
+      // 简单的片段注入（header/footer）
+      async function inject(id, url) {
+        const host = document.getElementById(id);
+        if (!host) return;
+        try {
+          const res = await fetch(url + '?v=' + Date.now(), { cache: 'no-store' });
+          host.innerHTML = await res.text();
+        } catch (e) {
+          host.innerHTML = `<div class="inject-error">Failed to load ${url}: ${e.message}</div>`;
+        }
+      }
+
+      // 执行通过 innerHTML 插入的 <script>
+      function runScriptsFrom(htmlFragment) {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = htmlFragment;
+        const scripts = tmp.querySelectorAll('script');
+        scripts.forEach(s => {
+          const tag = document.createElement('script');
+          if (s.src) tag.src = s.src; else tag.text = s.textContent || '';
+          // 复制常见属性（按需）
+          ['type','async','defer','crossorigin','referrerpolicy'].forEach(a=>{
+            if (s.hasAttribute(a)) tag.setAttribute(a, s.getAttribute(a));
+          });
+          document.body.appendChild(tag);
+        });
+      }
+
+      // 将 /level.html?n=.. 等链接改写为 levels.html?n=..
+      function rewriteLevelLinks(rootEl) {
+        const sel = [
+          'a[href^="/level.html?n="]',
+          'a[href^="level.html?n="]',
+          'a[href^="/level?n="]',
+          'a[href^="level?n="]'
+        ].join(',');
+        rootEl.querySelectorAll(sel).forEach(a => {
+          try {
+            const href = a.getAttribute('href');
+            const url = new URL(href, location.origin);
+            const num = url.searchParams.get('n');
+            if (num) a.setAttribute('href', `levels.html?n=${num}`);
+          } catch {}
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        // 1) 注入 header
+        await inject('header-container', 'components/header.html');
+
+        // 2) 拉取详情模板并替换 {{ slug }}
+        const root = document.getElementById('detail-root');
+        if (!root) return;
+
+        try {
+          const res = await fetch('components/level/[slug].html', { cache: 'no-store' });
+          let html = await res.text();
+          html = html.replaceAll('{{ slug }}', String(n));
+
+          // 清理模板里可能重复的 header/footer 容器
+          const tmp = document.createElement('div');
+          tmp.innerHTML = html;
+          tmp.querySelectorAll('#header-container, #footer-container').forEach(el => el.remove());
+
+          // 优先提取 <section class="level-detail">，否则整体塞入
+          const section = tmp.querySelector('.level-detail') || tmp.firstElementChild || tmp;
+
+          root.innerHTML = '';
+          root.appendChild(section);
+
+          // 执行模板脚本（VideoObject/prev-next 等逻辑）
+          runScriptsFrom(html);
+
+          // 首次改写链接
+          rewriteLevelLinks(document);
+
+          // 观察后续 DOM 变化（例如脚本异步创建的推荐卡片），持续改写链接
+          const mo = new MutationObserver(muts => {
+            muts.forEach(m => m.addedNodes && m.addedNodes.forEach(node => {
+              if (node.nodeType === 1) rewriteLevelLinks(node);
+            }));
+          });
+          mo.observe(document.body, { childList: true, subtree: true });
+        } catch (e) {
+          root.innerHTML = `<div class="inject-error">Failed to load level template: ${e.message}</div>`;
+        }
+
+        // 3) 注入 footer
+        await inject('footer-container', 'components/footer.html');
+      });
+    })();
+  </script>
 </head>
 <body>
-  <!-- 头部（组件注入） -->
+  <!-- 头部（两种模式共用） -->
   <div id="header-container"></div>
 
-  <!-- Level Guides 页面分区（由 main.js 注入具体组件） -->
-  <!-- 这个区域将被服务器替换为关卡详情内容 -->
+  <!-- ===== 列表模式：由 main.js 注入的几个区域（详情模式下不会使用） ===== -->
   <div id="levels-hero"></div>
   <div id="levels-tools"></div>
   <div id="levels-grid"></div>
   <div id="levels-ad"></div>
   <div id="levels-featured"></div>
 
-  <!-- 页脚（组件注入） -->
+  <!-- ===== 详情模式：挂载点 ===== -->
+  <main id="detail-root"></main>
+
+  <!-- 页脚（两种模式共用） -->
   <div id="footer-container"></div>
 
-  <!-- 仅加载主脚本，不再写任何内联装配/渲染逻辑，避免二次注入 -->
-  <script src="/scripts/main.js"></script>
+  <!-- 只有“列表模式”才加载 main.js，避免覆盖详情页内容 -->
+  <script>
+    (function(){
+      if (document.documentElement.dataset.detail === '0') {
+        var s = document.createElement('script');
+        s.src = 'scripts/main.js?v=4';   // 相对路径 + 版本号，避免缓存
+        document.body.appendChild(s);
+      }
+    })();
+  </script>
 </body>
 </html>
