@@ -1,5 +1,3 @@
-// scripts/main.js
-
 // ======= singleton guard: 防止 main.js 被重复执行 =======
 (function () {
   if (window.__HP_MAIN_SINGLETON__) {
