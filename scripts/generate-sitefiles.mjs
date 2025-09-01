@@ -13,6 +13,9 @@ const BASE_URL  = process.env.BASE_URL || 'https://www.holepeoplelevel.com';
 function getOriginFromBase(base) {
   try {
     const u = new URL(base); 
+    if (u.hostname === 'holepeoplelevel.com') {
+      u.hostname = 'www.holepeoplelevel.com';
+    }
     return `${u.protocol}//${u.host}`.replace(/\/+$/, '');
   } catch {
     return String(base).replace(/\/+$/, '');
