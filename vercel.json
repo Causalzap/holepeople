@@ -1,13 +1,44 @@
 {
   "version": 2,
-  "cleanUrls": true,
-  "buildCommand": "",
+
+  // 关闭自动去掉 .html，保持 /levels.html 这种 URL
+  "cleanUrls": false,
+
+  // 运行你的生成脚本；输出目录为仓库根目录（静态站根）
+  "buildCommand": "npm run build",
   "outputDirectory": ".",
+
+  // 把历史/短路径统一 301 到 /levels.html
+  "redirects": [
+    { "source": "/levels", "destination": "/levels.html", "permanent": true },
+    { "source": "/level", "destination": "/levels.html", "permanent": true },
+    { "source": "/level.html", "destination": "/levels.html", "permanent": true }
+  ],
+
+  // 关键文件的缓存策略
   "headers": [
     {
       "source": "/levels.html",
       "headers": [
         { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/data/level-videos.json",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache" }
+      ]
+    },
+    {
+      "source": "/components/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=600" }
+      ]
+    },
+    {
+      "source": "/scripts/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=600" }
       ]
     }
   ]
