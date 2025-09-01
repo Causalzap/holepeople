@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR  = path.resolve(__dirname, '..');
 
 // ⚠️ 部署时请设置：BASE_URL=https://www.holepeoplelevel.com
-const BASE_URL  = process.env.BASE_URL || 'http://localhost:3000';
+const BASE_URL  = process.env.BASE_URL || 'https://www.holepeoplelevel.com';
 
 // 解析出 origin（如 https://www.holepeoplelevel.com）
 function getOriginFromBase(base) {
