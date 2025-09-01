@@ -11,7 +11,6 @@ async function inject(id, url, { runScripts = true, onLoaded, silent = false } =
     host.innerHTML = html;
 
     if (runScripts) {
-      // 运行注入片段里的 <script>
       const tmp = document.createElement('div');
       tmp.innerHTML = html;
       tmp.querySelectorAll('script').forEach(s => {
@@ -59,26 +58,37 @@ const LEVEL_MAX = 639;
 const LIST_SECTION_IDS = ["levels-hero", "levels-tools", "levels-grid", "levels-ad", "levels-featured"];
 const DETAIL_HOST_ID = "level-detail-container";
 
-// ✅ 固定 canonical 的主域名（避免预览域或无 www）
+// ====== Canonical 处理 ======
 const CANONICAL_ORIGIN = "https://www.holepeoplelevel.com";
 
-// ✅ 统一更新 canonical（多次调用安全；带微任务兜底）
-function updateCanonical(n) {
-  const link = document.getElementById("canonical-link");
-  if (!link) return;
+/** 确保 head 里有且仅有一个 canonical 元素（找不到就创建） */
+function ensureCanonicalEl() {
+  let el = document.getElementById("canonical-link");
+  if (!el) {
+    el = document.createElement("link");
+    el.id = "canonical-link";
+    el.rel = "canonical";
+    document.head.appendChild(el);
+  }
+  // 移除其它意外的 canonical，避免重复标签
+  document.querySelectorAll('link[rel="canonical"]').forEach(other => {
+    if (other !== el) other.parentNode.removeChild(other);
+  });
+  return el;
+}
 
-  const target = (n && Number.isFinite(n))
+/** 设置 canonical：列表页指向 /levels.html，详情页指向 /levels.html?n=xx */
+function setCanonical(n) {
+  const el = ensureCanonicalEl();
+  const target = (Number.isFinite(n) && n >= 1 && n <= LEVEL_MAX)
     ? `${CANONICAL_ORIGIN}/levels.html?n=${n}`
     : `${CANONICAL_ORIGIN}/levels.html`;
 
-  if (link.getAttribute("href") !== target) {
-    link.setAttribute("href", target);
-  }
-  // 兜底一次，防止后续注入把它改回去
+  if (el.getAttribute("href") !== target) el.setAttribute("href", target);
+
+  // 微任务兜底一次，防止后续注入意外改回去
   queueMicrotask(() => {
-    if (link.getAttribute("href") !== target) {
-      link.setAttribute("href", target);
-    }
+    if (el.getAttribute("href") !== target) el.setAttribute("href", target);
   });
 }
 
@@ -100,16 +110,13 @@ async function showLevelDetail(n) {
     else document.body.appendChild(host);
   }
 
-  // 强制隐藏列表区块
   toggleElements([], LIST_SECTION_IDS);
   document.title = `Level ${n} - Hole People`;
-  updateCanonical(n); // ✅ 详情页 canonical
+  setCanonical(n); // 详情页 canonical
 
-  // 1) 先尝试加载专用文件（静默失败，不渲染报错 UI）
   try {
     await inject(DETAIL_HOST_ID, `components/level/${n}.html`, { silent: true });
   } catch {
-    // 2) 回退到通用模板：先取文本 -> 替换占位符 -> 一次性写入 DOM，再执行脚本
     let tpl = null;
     try {
       const res = await fetch(`components/level/[slug].html?v=${Date.now()}`, { cache: 'no-cache' });
@@ -126,7 +133,6 @@ async function showLevelDetail(n) {
         .replaceAll('{{slug}}', String(n));
       host2.innerHTML = html;
 
-      // 执行模板内联脚本（如果有）
       host2.querySelectorAll('script').forEach(s => {
         const ns = document.createElement('script');
         [...s.attributes].forEach(a => ns.setAttribute(a.name, a.value));
@@ -137,32 +143,26 @@ async function showLevelDetail(n) {
   }
 
   host.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  // ✅ 渲染完成再兜底一次
-  updateCanonical(n);
+  setCanonical(n); // 渲染完成兜底
 }
 
 function showLevelList() {
-  // 清空并隐藏详情容器
   const detail = document.getElementById(DETAIL_HOST_ID);
   if (detail) { detail.innerHTML = ''; detail.style.display = 'none'; }
-  // 显示列表区块
+
   toggleElements(LIST_SECTION_IDS, []);
   document.title = 'Level Guides - Hole People';
-  updateCanonical(null); // ✅ 列表页 canonical
+  setCanonical(null); // 列表页 canonical
 }
 
 async function renderLevelsPageByURL() {
   const n = getLevelFromURL();
-
-  // ✅ 在任何注入发生前，先更新一次 canonical
-  updateCanonical(n);
+  setCanonical(n); // 任何注入前先写一次
 
   if (n) await showLevelDetail(n);
   else showLevelList();
 
-  // ✅ 渲染结束兜底一次
-  updateCanonical(getLevelFromURL());
+  setCanonical(getLevelFromURL()); // 渲染结束再兜底
 }
 
 // ========== 绑定：拦截所有“关卡点击” ==========
@@ -174,7 +174,6 @@ function bindLevelClickDelegation() {
     const a = e.target.closest('a, button, [data-level]');
     if (!a) return;
 
-    // [data-level] 直接取数值（SPA）
     if (a.hasAttribute('data-level')) {
       const n = parseInt(a.getAttribute('data-level'), 10);
       if (n >= 1 && n <= LEVEL_MAX) {
@@ -185,7 +184,6 @@ function bindLevelClickDelegation() {
       return;
     }
 
-    // 带 ?n= 的链接：在 levels.html 内部改为 SPA
     if (a.tagName.toLowerCase() === 'a' && a.href) {
       try {
         const url = new URL(a.href);
@@ -200,7 +198,6 @@ function bindLevelClickDelegation() {
     }
   });
 
-  // 前进/后退
   window.addEventListener('popstate', renderLevelsPageByURL);
 }
 
@@ -208,7 +205,6 @@ function bindLevelClickDelegation() {
 function initLevelsTools() {
   const MAX = LEVEL_MAX;
 
-  // 大搜索框：按关卡号直达
   const inputMain = document.getElementById('lv-input-main');
   const btnSearch = document.getElementById('lv-search-btn');
 
@@ -229,7 +225,6 @@ function initLevelsTools() {
     inputMain.addEventListener('keydown', e => { if (e.key === 'Enter') goLevel(); });
   }
 
-  // Jump to range
   const select = document.getElementById('lv-range');
   const btnRange = document.getElementById('lv-range-go');
 
@@ -258,19 +253,22 @@ function initLevelsTools() {
 
 // ========== 页面组件装载 ==========
 async function loadComponents() {
+  // 页面一进来就按当前 URL 先写一次 canonical（避免首屏闪动）
+  if (location.pathname.split('/').pop() === 'levels.html') {
+    const n0 = getLevelFromURL();
+    setCanonical(n0);
+  }
+
   await inject("header-container", "components/header.html");
   highlightActiveNav();
 
-  // 是否在 levels.html（用 URL 判断）
   const pageFile = location.pathname.split('/').pop();
   const onLevelsPage = (pageFile === 'levels.html');
 
-  // 先按 URL 渲染一次（处理直达 levels.html?n=xx）
   if (onLevelsPage) {
     renderLevelsPageByURL();
   }
 
-  // 首页组件
   if (document.getElementById("hero-container")) {
     await inject("hero-container", "components/hero.html");
     await inject("overview-container", "components/overview.html");
@@ -280,7 +278,6 @@ async function loadComponents() {
     await inject("faq-container", "components/faq.html");
   }
 
-  // Levels 组件
   if (onLevelsPage) {
     await inject("levels-tools", "components/levels-tools.html");
     initLevelsTools();
@@ -289,7 +286,6 @@ async function loadComponents() {
     await inject("levels-ad", "components/levels-ad.html");
     await inject("levels-featured", "components/levels-featured.html");
 
-    // 组件注入完后再渲一次，确保状态与 URL 匹配
     bindLevelClickDelegation();
     await renderLevelsPageByURL();
   }
