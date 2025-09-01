@@ -6,6 +6,26 @@
   <title>Hole People - Level Guides</title>
   <meta name="description" content="Browse complete Hole People level guides with step-by-step walkthroughs, three-star strategies, and videos for all 600+ levels. Jump to any level and beat the puzzle."/>
   <link id="canonical-link" rel="canonical" href="https://www.holepeoplelevel.com/levels.html"/>
+
+  <script>
+  (function () {
+    var ORIGIN = 'https://www.holepeoplelevel.com';
+    var n = parseInt(new URLSearchParams(location.search).get('n'), 10);
+    var target = ORIGIN + '/levels.html' + (Number.isFinite(n) ? ('?n=' + n) : '');
+    // 确保唯一且存在
+    var link = document.getElementById('canonical-link');
+    if (!link) { link = document.createElement('link'); link.id='canonical-link'; link.rel='canonical'; document.head.appendChild(link); }
+    link.setAttribute('href', target);
+    // 清理任何其它 canonical
+    document.querySelectorAll('link[rel="canonical"]').forEach(function (o) { if (o !== link) o.parentNode.removeChild(o); });
+    // 守护：有人改 <head> 就立刻纠正
+    new MutationObserver(function () {
+      if (link.getAttribute('href') !== target) link.setAttribute('href', target);
+      document.querySelectorAll('link[rel="canonical"]').forEach(function (o) { if (o !== link) o.parentNode.removeChild(o); });
+    }).observe(document.head, { childList: true, subtree: true });
+  })();
+</script>
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 
@@ -125,6 +145,6 @@
   <div id="footer-container"></div>
 
   <!-- 仅加载主脚本，不再写任何内联装配/渲染逻辑，避免二次注入 -->
-  <script src="/scripts/main.js"></script>
+  <script src="/scripts/main.js?v=20250901"></script>
 </body>
 </html>
