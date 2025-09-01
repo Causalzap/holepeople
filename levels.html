@@ -109,11 +109,12 @@
   <!-- ===== 切换脚本（必须在 main.js 之前执行） ===== -->
   <script>
   (function () {
-    const qs = new URLSearchParams(location.search);
-    const raw = qs.get('n');
-    const num = Number(raw);
-    const clamp = (n) => Math.min(639, Math.max(1, n)); // 最大关卡按需调整
-    const slug = Number.isFinite(num) ? clamp(num) : null;
+      const qs = new URLSearchParams(location.search);
+      const raw = qs.get('n');
+      const isInt = (s) => typeof s === 'string' && /^\d+$/.test(s);
+      const toInt = (s) => parseInt(s, 10);
+      const inRange = (n) => n >= 1 && n <= 639;   // 按需改上限 
+      const slug = (raw !== null && isInt(raw) && inRange(toInt(raw))) ? toInt(raw) : null;
 
     // 构造相对链接（兼容 github.io/repo）
     const selfHref = (n) => `${location.pathname}?n=${n}`;
@@ -349,13 +350,14 @@
   <!-- 仅当“没有 n 参数”时才加载首页脚本，避免覆盖详情 -->
   <script>
     (function () {
-      var qs = new URLSearchParams(location.search);
-      var hasN = qs.has('n') && !isNaN(Number(qs.get('n')));
-      if (!hasN) {
-        var s = document.createElement('script');
-        s.src = 'scripts/main.js?v=2'; // v=2 用于清缓存
-        document.body.appendChild(s);
-      }
+     var qs = new URLSearchParams(location.search);
+     var raw = qs.get('n');
+     var hasValidN = (raw !== null) && /^\d+$/.test(raw) && +raw >= 1 && +raw <= 639;
+     if (!hasValidN) {
+     var s = document.createElement('script');
+     s.src = 'scripts/main.js?v=2';
+     document.body.appendChild(s);
+     }
     })();
   </script>
 </body>
