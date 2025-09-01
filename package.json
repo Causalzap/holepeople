@@ -1,18 +1,8 @@
 {
   "name": "holepeople",
+  "private": true,
   "version": "1.0.0",
-  "description": "Hole People 游戏攻略网站",
-  "main": "server.js",
   "scripts": {
-    "dev": "node server.js",
-    "start": "node server.js",
-    "build": "echo \"no build step\"",
-    "postbuild": "BASE_URL=https://holepeoplelevel.com node scripts/generate-sitefiles.mjs",
-    "sitefiles": "node scripts/generate-sitefiles.mjs",
-    "sitemap": "node scripts/generate-sitefiles.mjs"
-  },
-  "dependencies": {
-    "express": "^4.21.2",
-    "serve-favicon": "^2.5.1"
+    "build": "BASE_URL=https://holepeoplelevel.com node scripts/generate-sitefiles.mjs"
   }
 }
