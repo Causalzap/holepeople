@@ -12,7 +12,7 @@ const BASE_URL  = process.env.BASE_URL || 'https://www.holepeoplelevel.com';
 // 解析出 origin（如 https://www.holepeoplelevel.com）
 function getOriginFromBase(base) {
   try {
-    const u = new URL(base);
+    const u = new URL(base); 
     return `${u.protocol}//${u.host}`.replace(/\/+$/, '');
   } catch {
     return String(base).replace(/\/+$/, '');
