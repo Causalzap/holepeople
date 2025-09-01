@@ -59,6 +59,20 @@ const LEVEL_MAX = 639;
 const LIST_SECTION_IDS = ["levels-hero", "levels-tools", "levels-grid", "levels-ad", "levels-featured"];
 const DETAIL_HOST_ID = "level-detail-container";
 
+// ✅ 固定 canonical 的主域名（避免预览域或无 www）
+const CANONICAL_ORIGIN = "https://www.holepeoplelevel.com";
+
+// ✅ 根据是否有 ?n= 设置 canonical
+function updateCanonical(n) {
+  const link = document.getElementById("canonical-link");
+  if (!link) return;
+  if (n && Number.isFinite(n)) {
+    link.setAttribute("href", `${CANONICAL_ORIGIN}/levels.html?n=${n}`);
+  } else {
+    link.setAttribute("href", `${CANONICAL_ORIGIN}/levels.html`);
+  }
+}
+
 function getLevelFromURL() {
   const sp = new URLSearchParams(location.search);
   const n = parseInt(sp.get("n"), 10);
@@ -80,6 +94,7 @@ async function showLevelDetail(n) {
   // 强制隐藏列表区块
   toggleElements([], LIST_SECTION_IDS);
   document.title = `Level ${n} - Hole People`;
+  updateCanonical(n); // ✅ 详情页 canonical
 
   // 1) 先尝试加载专用文件（静默失败，不渲染报错 UI）
   try {
@@ -122,6 +137,7 @@ function showLevelList() {
   // 显示列表区块
   toggleElements(LIST_SECTION_IDS, []);
   document.title = 'Level Guides - Hole People';
+  updateCanonical(null); // ✅ 列表页 canonical
 }
 
 async function renderLevelsPageByURL() {
