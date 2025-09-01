@@ -62,15 +62,24 @@ const DETAIL_HOST_ID = "level-detail-container";
 // ✅ 固定 canonical 的主域名（避免预览域或无 www）
 const CANONICAL_ORIGIN = "https://www.holepeoplelevel.com";
 
-// ✅ 根据是否有 ?n= 设置 canonical
+// ✅ 统一更新 canonical（多次调用安全；带微任务兜底）
 function updateCanonical(n) {
   const link = document.getElementById("canonical-link");
   if (!link) return;
-  if (n && Number.isFinite(n)) {
-    link.setAttribute("href", `${CANONICAL_ORIGIN}/levels.html?n=${n}`);
-  } else {
-    link.setAttribute("href", `${CANONICAL_ORIGIN}/levels.html`);
+
+  const target = (n && Number.isFinite(n))
+    ? `${CANONICAL_ORIGIN}/levels.html?n=${n}`
+    : `${CANONICAL_ORIGIN}/levels.html`;
+
+  if (link.getAttribute("href") !== target) {
+    link.setAttribute("href", target);
   }
+  // 兜底一次，防止后续注入把它改回去
+  queueMicrotask(() => {
+    if (link.getAttribute("href") !== target) {
+      link.setAttribute("href", target);
+    }
+  });
 }
 
 function getLevelFromURL() {
@@ -128,6 +137,9 @@ async function showLevelDetail(n) {
   }
 
   host.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // ✅ 渲染完成再兜底一次
+  updateCanonical(n);
 }
 
 function showLevelList() {
@@ -142,8 +154,15 @@ function showLevelList() {
 
 async function renderLevelsPageByURL() {
   const n = getLevelFromURL();
+
+  // ✅ 在任何注入发生前，先更新一次 canonical
+  updateCanonical(n);
+
   if (n) await showLevelDetail(n);
   else showLevelList();
+
+  // ✅ 渲染结束兜底一次
+  updateCanonical(getLevelFromURL());
 }
 
 // ========== 绑定：拦截所有“关卡点击” ==========
