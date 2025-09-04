@@ -275,8 +275,9 @@ async function loadComponents() {
     return;
   }
   loadComponents.__running = true;
+  
   try {
-    // 1. 注入所有页面共通的头部和页脚
+    // 1. 注入所有页面共通的头部
     await inject("header-container", "components/header.html");
     highlightActiveNav();
 
@@ -285,13 +286,28 @@ async function loadComponents() {
 
     // 3. 根据不同的页面，注入特定的内容
     if (pageFile === 'levels.html') {
-      // ... 您原有的 levels.html 处理逻辑 ...
-      const currentN = getLevelFromURL();
-      // ... (其余代码保持不变) ...
+      // 并行注入关卡列表页的所有组件
+      await Promise.all([
+        inject("levels-hero", "components/levels/hero.html"),
+        inject("levels-tools", "components/levels/tools.html"),
+        inject("levels-grid", "components/levels/grid.html"),
+        inject("levels-ad", "components/levels/ad.html"),
+        inject("levels-featured", "components/levels/featured.html")
+      ]);
+      
+      // 初始化工具条
+      initLevelsTools();
+      
+      // 绑定事件
+      bindLevelClickDelegation();
+      
+      // 根据URL参数渲染详情或列表
+      const n = getLevelFromURL();
+      if (n) await showLevelDetail(n);
+      else showLevelList();
     } 
-    // +++ 新增：处理首页的逻辑 +++
+    // 处理首页逻辑
     else if (pageFile === 'index.html' || pageFile === '' || pageFile === 'home.html') { 
-      // 根据您的实际首页文件名进行调整
       // 按顺序注入首页所需的各个模块
       await inject("hero-container", "components/hero.html");
       await inject("overview-container", "components/overview.html");
@@ -300,11 +316,13 @@ async function loadComponents() {
       await inject("platform-container", "components/platform.html");
       await inject("faq-container", "components/faq.html");
     }
-    // 可以继续添加 else if 来处理其他页面，例如 blog.html, download.html 等
+    // 可以继续添加 else if 来处理其他页面
 
     // 4. 注入所有页面共通的页脚
     await inject("footer-container", "components/footer.html");
 
+  } catch (error) {
+    console.error('组件加载过程中出错:', error);
   } finally {
     loadComponents.__running = false;
   }
