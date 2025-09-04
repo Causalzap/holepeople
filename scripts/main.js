@@ -288,11 +288,11 @@ async function loadComponents() {
     if (pageFile === 'levels.html') {
       // 并行注入关卡列表页的所有组件
       await Promise.all([
-        inject("levels-hero", "components/levels/hero.html"),
-        inject("levels-tools", "components/levels/tools.html"),
-        inject("levels-grid", "components/levels/grid.html"),
-        inject("levels-ad", "components/levels/ad.html"),
-        inject("levels-featured", "components/levels/featured.html")
+        inject("levels-hero", "components/levels-hero.html"),
+        inject("levels-tools", "components/levels-tools.html"),
+        inject("levels-grid", "components/levels-grid.html"),
+        inject("levels-ad", "components/levels-ad.html"),
+        inject("levels-featured", "components/levels-featured.html")
       ]);
       
       // 初始化工具条
