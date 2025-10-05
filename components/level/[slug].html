@@ -21,7 +21,7 @@
           <div class="level-jump" role="search" aria-label="Go to specific level">
             <label for="lv-input">Go to level</label>
             <div class="jump-box">
-              <input id="lv-input" type="number" min="1" max="639" placeholder="1-639" inputmode="numeric" />
+              <input id="lv-input" type="number" min="1" max="1000" placeholder="1-1000" inputmode="numeric" />
               <button id="lv-go" class="go-btn">
                 <i class="fas fa-location-arrow" aria-hidden="true"></i>
                 Go
@@ -248,7 +248,7 @@
         if (id) {
           yt.src = buildYtEmbed(id);
           // 注入 <link rel="prev/next">（利于SEO发现分页）
-          const clamp = x => Math.min(639, Math.max(1, x));
+          const clamp = x => Math.min(2000, Math.max(1, x));
           const prevHref = `levels.html?n=${clamp(n-1)}`;
           const nextHref = `levels.html?n=${clamp(n+1)}`;
           const linkPrev = Object.assign(document.createElement('link'), { rel:'prev', href: prevHref });
@@ -267,7 +267,7 @@
     applyVideo(slug);
   
     // 上/下一关
-    const clamp = n => Math.min(639, Math.max(1, n));
+    const clamp = n => Math.min(2000, Math.max(1, n));
     const prev = document.getElementById('btn-prev');
     const next = document.getElementById('btn-next');
     if(prev) prev.href = `/level.html?n=${clamp(slug - 1)}`;

@@ -67,7 +67,7 @@ function highlightActiveNav() {
 }
 
 // ========== Level 详情渲染（基于 ?n=） ==========
-const LEVEL_MAX = 639;
+const LEVEL_MAX = 2000;
 const LIST_SECTION_IDS = ["levels-hero", "levels-tools", "levels-grid", "levels-ad", "levels-featured"];
 const DETAIL_HOST_ID = "level-detail-container";
 
